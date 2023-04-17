@@ -6,9 +6,16 @@ public class Sword : MonoBehaviour
 {
     private PlayerControls playerControls;
     private Animator myAnimator;
+    private PlayerController playerController;
+    private SpriteRenderer playerSpriteRenderer;
+    private ActiveWeapon activeWeapon;
 
     private void Awake()
     {
+        // This isn't great on performance. It'll change in the future.
+        playerController = GetComponentInParent<PlayerController>();
+        playerSpriteRenderer = playerController.GetComponent<SpriteRenderer>();
+        activeWeapon = GetComponentInParent<ActiveWeapon>();
         playerControls = new PlayerControls();
         myAnimator = GetComponent<Animator>();
     }
@@ -32,6 +39,24 @@ public class Sword : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        AdjustDirection();
+    }
+
+    private void AdjustDirection()
+    {
+        // If the player is "flipped" on the x axis, then the sword "rotates" on the y axis
+        float yAxisRotation = playerSpriteRenderer.flipX ? -180 : 0;
+
+        // Add a little bit of directional influence in relation to the mouse/right stick
+        // TODO: This is commented out until I find a way to make controller and mouse controls stop conflicting
+        //Vector3 mousePos = Input.mousePosition;
+        //float mouseAngle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
         
+        // Replace Quaternion.Euler's z axis with this and remove yAxisRotation to allow the
+        //  sword to swing around in any direction
+        //Vector2 lookDirection = playerControls.Movement.Look.ReadValue<Vector2>();
+        //float controllerAngle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
+
+        activeWeapon.transform.rotation = Quaternion.Euler(0, yAxisRotation, 0);
     }
 }
