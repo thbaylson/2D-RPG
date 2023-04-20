@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class Sword : MonoBehaviour
 {
+    [SerializeField] private GameObject slashAnimPrefab;
+    [SerializeField] private Transform animSpawnPoint;
+
     private PlayerControls playerControls;
     private Animator myAnimator;
     private PlayerController playerController;
     private SpriteRenderer playerSpriteRenderer;
     private ActiveWeapon activeWeapon;
+
+    private GameObject animPrefab;
 
     private void Awake()
     {
@@ -31,9 +36,32 @@ public class Sword : MonoBehaviour
         playerControls.Combat.Attack.started += _ => Attack();
     }
 
+    // Animation Event
+    public void SwingUpFlipAnim()
+    {
+        animPrefab.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
+        
+        if (playerController.FacingLeft)
+        {
+            animPrefab.GetComponent<SpriteRenderer>().flipX = true;
+        }
+    }
+
+    // Animation Event
+    public void SwingDownFlipAnim()
+    {
+        if (playerController.FacingLeft)
+        {
+            animPrefab.GetComponent<SpriteRenderer>().flipX = true;
+        }
+    }
+
     private void Attack()
     {
         myAnimator.SetTrigger("Attack");
+
+        animPrefab = Instantiate(slashAnimPrefab, animSpawnPoint.position, Quaternion.identity);
+        animPrefab.transform.parent = this.transform.parent;
     }
 
     // Update is called once per frame
