@@ -5,7 +5,14 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] private int startingHealth = 1;
+    
+    private Knockback knockback;
     private int currentHealth;
+
+    private void Awake()
+    {
+        knockback = GetComponent<Knockback>();
+    }
 
     private void Start()
     {
@@ -15,6 +22,9 @@ public class EnemyHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth = (damage >= currentHealth) ? 0 : currentHealth - damage;
+        // Magic number represent the amount of knockback. Bigger number means more knockback. This should come from the weapon.
+        knockback.GetKnockedback(PlayerController.Instance.transform, 15f);
+
         DetectDeath();
     }
 
