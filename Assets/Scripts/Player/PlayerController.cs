@@ -7,7 +7,12 @@ public class PlayerController : MonoBehaviour
     public bool FacingLeft { get { return facingLeft; } set { facingLeft = value; } }
     public static PlayerController Instance;
 
+    [SerializeField] private TrailRenderer trailRenderer;
+
     [SerializeField] private float moveSpeed = 1f;
+    [SerializeField] private float dashSpeedModifier = 4f;
+    [SerializeField] private float dashTime = .2f;
+    [SerializeField] private float dashCD = .25f;
 
     private PlayerControls playerControls;
     private Vector2 movement;
@@ -16,6 +21,7 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer myRenderer;
 
     private bool facingLeft = false;
+    private bool isDashing = false;
 
     private void Awake()
     {
@@ -29,6 +35,11 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         playerControls.Enable();
+    }
+
+    void Start()
+    {
+        playerControls.Combat.Dash.performed += _ => Dash();
     }
 
     private void Update()
@@ -72,5 +83,27 @@ public class PlayerController : MonoBehaviour
                 facingLeft = false;
             }
         }
+    }
+
+    private void Dash()
+    {
+        // If we are already dashing, don't dash again
+        if(isDashing) { return; }
+
+        isDashing = true;
+        trailRenderer.emitting = true;
+
+        // This seems like a bad idea. What if the player saves/quits in the middle of a dash?
+        moveSpeed *= dashSpeedModifier;
+        StartCoroutine(EndDashRoutine());
+    }
+
+    private IEnumerator EndDashRoutine()
+    {
+        yield return new WaitForSeconds(dashTime);
+        moveSpeed /= dashSpeedModifier;
+        trailRenderer.emitting = false;
+        yield return new WaitForSeconds(dashCD);
+        isDashing = false;
     }
 }
