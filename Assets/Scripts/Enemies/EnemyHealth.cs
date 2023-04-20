@@ -7,11 +7,13 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private int startingHealth = 1;
     
     private Knockback knockback;
+    private Flash flash;
     private int currentHealth;
 
     private void Awake()
     {
         knockback = GetComponent<Knockback>();
+        flash = GetComponent<Flash>();
     }
 
     private void Start()
@@ -22,8 +24,16 @@ public class EnemyHealth : MonoBehaviour
     public void TakeDamage(int damageAmount, float knockbackAmount)
     {
         currentHealth = (damageAmount >= currentHealth) ? 0 : currentHealth - damageAmount;
+        flash.FlashAction();
         knockback.GetKnockedback(PlayerController.Instance.transform, knockbackAmount);
 
+        StartCoroutine(CheckDetectDeathRoutine());
+    }
+
+    private IEnumerator CheckDetectDeathRoutine()
+    {
+        // Don't let the enemy die until after the flash effect happens
+        yield return new WaitForSeconds(flash.GetRestoreMatTime());
         DetectDeath();
     }
 

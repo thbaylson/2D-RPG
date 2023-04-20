@@ -20,8 +20,10 @@ public class EnemyPathfinding : MonoBehaviour
     {
         // If we're getting knocked back, do let the gameobject move on its own
         if (knockback.gettingKnockedBack) { return; }
-        
-        rb.MovePosition(rb.position + moveDir * (moveSpeed * Time.fixedDeltaTime));
+
+        // TODO: Every enemy on the screen will move in sync. Maybe make this a coroutine with random start/end times?
+        float randomInfluence = Random.Range(-3, 3)/10;
+        rb.MovePosition(rb.position + moveDir * ((moveSpeed + randomInfluence ) * Time.fixedDeltaTime));
     }
 
     public void MoveTo(Vector2 targetPosition)
