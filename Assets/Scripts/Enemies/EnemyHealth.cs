@@ -19,11 +19,10 @@ public class EnemyHealth : MonoBehaviour
         currentHealth = startingHealth;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damageAmount, float knockbackAmount)
     {
-        currentHealth = (damage >= currentHealth) ? 0 : currentHealth - damage;
-        // Magic number represent the amount of knockback. Bigger number means more knockback. This should come from the weapon.
-        knockback.GetKnockedback(PlayerController.Instance.transform, 15f);
+        currentHealth = (damageAmount >= currentHealth) ? 0 : currentHealth - damageAmount;
+        knockback.GetKnockedback(PlayerController.Instance.transform, knockbackAmount);
 
         DetectDeath();
     }
