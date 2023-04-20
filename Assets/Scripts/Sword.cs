@@ -6,6 +6,7 @@ public class Sword : MonoBehaviour
 {
     [SerializeField] private GameObject slashAnimPrefab;
     [SerializeField] private Transform animSpawnPoint;
+    [SerializeField] private Transform weaponCollider;
 
     private PlayerControls playerControls;
     private Animator myAnimator;
@@ -37,7 +38,13 @@ public class Sword : MonoBehaviour
     }
 
     // Animation Event
-    public void SwingUpFlipAnim()
+    public void SwingFinishAnimEvent()
+    {
+        weaponCollider.gameObject.SetActive(false);
+    }
+
+    // Animation Event
+    public void SwingUpFlipAnimEvent()
     {
         animPrefab.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
         
@@ -48,7 +55,7 @@ public class Sword : MonoBehaviour
     }
 
     // Animation Event
-    public void SwingDownFlipAnim()
+    public void SwingDownFlipAnimEvent()
     {
         if (playerController.FacingLeft)
         {
@@ -59,6 +66,7 @@ public class Sword : MonoBehaviour
     private void Attack()
     {
         myAnimator.SetTrigger("Attack");
+        weaponCollider.gameObject.SetActive(true);
 
         animPrefab = Instantiate(slashAnimPrefab, animSpawnPoint.position, Quaternion.identity);
         animPrefab.transform.parent = this.transform.parent;
@@ -79,12 +87,15 @@ public class Sword : MonoBehaviour
         // TODO: This is commented out until I find a way to make controller and mouse controls stop conflicting
         //Vector3 mousePos = Input.mousePosition;
         //float mouseAngle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
-        
+
         // Replace Quaternion.Euler's z axis with this and remove yAxisRotation to allow the
         //  sword to swing around in any direction
         //Vector2 lookDirection = playerControls.Movement.Look.ReadValue<Vector2>();
         //float controllerAngle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
 
+        // Flip the weapon collider
+        weaponCollider.transform.rotation = Quaternion.Euler(0, yAxisRotation, 0);
+        // Flip the weapon gameobject
         activeWeapon.transform.rotation = Quaternion.Euler(0, yAxisRotation, 0);
     }
 }
