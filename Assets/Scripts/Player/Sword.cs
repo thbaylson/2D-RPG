@@ -7,6 +7,7 @@ public class Sword : MonoBehaviour
     [SerializeField] private GameObject slashAnimPrefab;
     [SerializeField] private Transform animSpawnPoint;
     [SerializeField] private Transform weaponCollider;
+    [SerializeField] private float attackCoolDown = 1f;
 
     private PlayerControls playerControls;
     private Animator myAnimator;
@@ -15,6 +16,9 @@ public class Sword : MonoBehaviour
     private ActiveWeapon activeWeapon;
 
     private GameObject animPrefab;
+
+    // CD can't be too short or there will be issues with collision detection
+    private bool attackButtonDown, isAttacking = false;
 
     private void Awake()
     {
@@ -34,7 +38,47 @@ public class Sword : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerControls.Combat.Attack.started += _ => Attack();
+        playerControls.Combat.Attack.started += _ => StartAttacking();
+        playerControls.Combat.Attack.canceled += _ => StopAttacking();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        AdjustDirection();
+        Attack();
+    }
+
+    private void StartAttacking()
+    {
+        attackButtonDown = true;
+    }
+
+    private void StopAttacking()
+    {
+        attackButtonDown = false;
+    }
+
+    private IEnumerator AttackCDRoutine()
+    {
+        yield return new WaitForSeconds(attackCoolDown);
+        isAttacking = false;
+    }
+
+    private void Attack()
+    {
+        // If we are not attacking or we're already attacking, don't do the attack code
+        if(!attackButtonDown || isAttacking) { return; }
+
+        isAttacking = true;
+
+        myAnimator.SetTrigger("Attack");
+        weaponCollider.gameObject.SetActive(true);
+
+        animPrefab = Instantiate(slashAnimPrefab, animSpawnPoint.position, Quaternion.identity);
+        animPrefab.transform.parent = this.transform.parent;
+
+        StartCoroutine(AttackCDRoutine());
     }
 
     // Animation Event
@@ -61,21 +105,6 @@ public class Sword : MonoBehaviour
         {
             animPrefab.GetComponent<SpriteRenderer>().flipX = true;
         }
-    }
-
-    private void Attack()
-    {
-        myAnimator.SetTrigger("Attack");
-        weaponCollider.gameObject.SetActive(true);
-
-        animPrefab = Instantiate(slashAnimPrefab, animSpawnPoint.position, Quaternion.identity);
-        animPrefab.transform.parent = this.transform.parent;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        AdjustDirection();
     }
 
     private void AdjustDirection()
