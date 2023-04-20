@@ -2350,7 +2350,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trailRenderer: {fileID: 1562729942}
-  moveSpeed: 4
+  startingMoveSpeed: 5
   dashSpeedModifier: 4
   dashTime: 0.2
   dashCD: 0.25

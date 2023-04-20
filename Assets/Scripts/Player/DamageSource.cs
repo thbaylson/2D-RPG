@@ -10,10 +10,7 @@ public class DamageSource : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // Do we only ever want to hit enemies?
-        if (collision.gameObject.GetComponent<EnemyHealth>())
-        {
-            EnemyHealth enemyHealth = collision.gameObject.GetComponent<EnemyHealth>();
-            enemyHealth.TakeDamage(damageAmount, knockbackAmount);
-        }
+        EnemyHealth enemyHealth = collision.gameObject.GetComponent<EnemyHealth>();
+        enemyHealth?.TakeDamage(damageAmount, knockbackAmount);
     }
 }

@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public bool FacingLeft { get { return facingLeft; } set { facingLeft = value; } }
+    public bool FacingLeft { get { return facingLeft; } }
     public static PlayerController Instance;
 
     [SerializeField] private TrailRenderer trailRenderer;
 
-    [SerializeField] private float moveSpeed = 1f;
+    [SerializeField] private float startingMoveSpeed = 1f;
     [SerializeField] private float dashSpeedModifier = 4f;
     [SerializeField] private float dashTime = .2f;
     [SerializeField] private float dashCD = .25f;
@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     private Animator myAnimator;
     private SpriteRenderer myRenderer;
 
+    private float currentMoveSpeed;
     private bool facingLeft = false;
     private bool isDashing = false;
 
@@ -40,6 +41,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         playerControls.Combat.Dash.performed += _ => Dash();
+
+        currentMoveSpeed = startingMoveSpeed;
     }
 
     private void Update()
@@ -64,7 +67,7 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         // Multiply floats first to make vector math more computationally efficient
-        rb.MovePosition(rb.position + movement * (moveSpeed * Time.fixedDeltaTime));
+        rb.MovePosition(rb.position + movement * (currentMoveSpeed * Time.fixedDeltaTime));
     }
 
     private void AdjustPlayerDirection()
@@ -87,21 +90,23 @@ public class PlayerController : MonoBehaviour
 
     private void Dash()
     {
+        // TODO: Consider if we want to lock movement input while dashing. Ie, should the
+        //  player be able to freely change direction mid-dash?
+
         // If we are already dashing, don't dash again
         if(isDashing) { return; }
 
         isDashing = true;
         trailRenderer.emitting = true;
 
-        // This seems like a bad idea. What if the player saves/quits in the middle of a dash?
-        moveSpeed *= dashSpeedModifier;
+        currentMoveSpeed = startingMoveSpeed * dashSpeedModifier;
         StartCoroutine(EndDashRoutine());
     }
 
     private IEnumerator EndDashRoutine()
     {
         yield return new WaitForSeconds(dashTime);
-        moveSpeed /= dashSpeedModifier;
+        currentMoveSpeed = startingMoveSpeed;
         trailRenderer.emitting = false;
         yield return new WaitForSeconds(dashCD);
         isDashing = false;

@@ -67,6 +67,7 @@ public class Sword : MonoBehaviour
 
     private void Attack()
     {
+        // TODO: Consider if we really want the player to be able to auto-swing.
         // If we are not attacking or we're already attacking, don't do the attack code
         if(!attackButtonDown || isAttacking) { return; }
 
