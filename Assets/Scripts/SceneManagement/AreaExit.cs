@@ -14,6 +14,7 @@ public class AreaExit : MonoBehaviour
         if (collision.gameObject.GetComponent<PlayerController>())
         {
             SceneManager.LoadScene(sceneToLoad);
+            // This works becaues SceneManagement is a Singleton that persists through scene transitions.
             SceneManagement.Instance.SetTransitionName(sceneTransitionName);
         }
     }
