@@ -26936,7 +26936,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeScreen: {fileID: 619586067}
-  fadeSpeed: 10
+  fadeSpeed: 5
 --- !u!114 &729460008
 MonoBehaviour:
   m_ObjectHideFlags: 0

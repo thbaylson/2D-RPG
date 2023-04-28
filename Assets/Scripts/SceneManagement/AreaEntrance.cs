@@ -6,6 +6,8 @@ public class AreaEntrance : MonoBehaviour
 {
     [SerializeField] private string transitionName;
 
+    private float waitToFadeTime = 0.25f;
+
     void Start()
     {
         // This works because both SceneManagement and PlayerController are Singletons. As such, they will
@@ -15,7 +17,14 @@ public class AreaEntrance : MonoBehaviour
             PlayerController.Instance.transform.position = this.transform.position;
             CameraController.Instance.SetPlayerCameraFollow();
 
-            UIFade.Instance.FadeToTransparent();
+            // Delay the fade because certain objects (ie: Canopy Layer) may need to snap into position
+            StartCoroutine(DelayFadeRoutine());
         }
+    }
+
+    private IEnumerator DelayFadeRoutine()
+    {
+        yield return new WaitForSeconds(waitToFadeTime);
+        UIFade.Instance.FadeToTransparent();
     }
 }

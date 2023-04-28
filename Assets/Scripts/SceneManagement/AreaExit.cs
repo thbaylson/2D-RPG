@@ -25,6 +25,8 @@ public class AreaExit : MonoBehaviour
 
     private IEnumerator LoadSceneRoutine()
     {
+        // We need to give the fade transition time to happen or it'll get cancelled by
+        //  AreaEntrance calling FadeToTransparent()
         yield return new WaitForSeconds(waitToLoadTime);
         SceneManager.LoadScene(sceneToLoad);
     }
