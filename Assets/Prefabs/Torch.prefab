@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 348509552456776609}
   - component: {fileID: 2778381709028882376}
   - component: {fileID: 1722525042668928508}
+  - component: {fileID: 1752618910018925364}
   m_Layer: 0
   m_Name: Flame
   m_TagString: Untagged
@@ -106,6 +107,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1752618910018925364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3245367902330313936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f68f6e925a13fd44192e711ff660deab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4354687215979325006
 GameObject:
   m_ObjectHideFlags: 0
