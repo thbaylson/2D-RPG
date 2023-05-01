@@ -7,6 +7,9 @@ public class PlayerController : Singleton<PlayerController>
     public bool FacingLeft { get { return facingLeft; } }
 
     [SerializeField] private TrailRenderer trailRenderer;
+    // This weapon collider was made specifically for the sword weapon. Why would the player be the only
+    //  reference point for this data? Why should Sword need to reach through PlayerController to see its own collider?
+    [SerializeField] private Transform weaponCollider;
 
     [SerializeField] private float startingMoveSpeed = 1f;
     [SerializeField] private float dashSpeedModifier = 4f;
@@ -55,6 +58,11 @@ public class PlayerController : Singleton<PlayerController>
     private void FixedUpdate()
     {
         Move();
+    }
+
+    public Transform GetWeaponCollider()
+    {
+        return weaponCollider;
     }
 
     private void PlayerInput()

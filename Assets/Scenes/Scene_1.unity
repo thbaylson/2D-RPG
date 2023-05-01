@@ -39235,6 +39235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trailRenderer: {fileID: 1562729942}
+  weaponCollider: {fileID: 1047458261}
   startingMoveSpeed: 5
   dashSpeedModifier: 4
   dashTime: 0.2

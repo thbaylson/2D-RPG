@@ -57,6 +57,7 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
 
         isAttacking = true;
         // Cast the current weapon to be IWeapon. Not sure why is isn't defined explicitly as IWeapon?
+        // May get a null exception for this line if player quickly spams Attack and ChangeActiveWeapon
         (CurrentActiveWeapon as IWeapon).Attack();
         attackButtonDown = false;
     }

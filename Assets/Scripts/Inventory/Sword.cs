@@ -6,24 +6,29 @@ public class Sword : MonoBehaviour, IWeapon
 {
     [SerializeField] private GameObject slashAnimPrefab;
     [SerializeField] private Transform animSpawnPoint;
-    [SerializeField] private Transform weaponCollider;
     // CD can't be too short or there will be issues with collision detection
     [SerializeField] private float attackCoolDown = 1f;
 
     private Animator myAnimator;
-    private PlayerController playerController;
     private SpriteRenderer playerSpriteRenderer;
-    private ActiveWeapon activeWeapon;
+    private Transform weaponCollider;
 
     private GameObject animPrefab;
 
     private void Awake()
     {
-        // This isn't great on performance. It'll change in the future.
-        playerController = GetComponentInParent<PlayerController>();
-        playerSpriteRenderer = playerController.GetComponent<SpriteRenderer>();
-        activeWeapon = GetComponentInParent<ActiveWeapon>();
+        playerSpriteRenderer = PlayerController.Instance.GetComponent<SpriteRenderer>();
         myAnimator = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
+        // This is going to give me an aneurysm. This is clearly a code smell.
+        weaponCollider = PlayerController.Instance.GetWeaponCollider();
+
+        // I thought the above code smelled bad. This is really, really bad.
+        //  TODO: Refactor this for the same reasons as above. Only the sword cares about this gameobject.
+        animSpawnPoint = GameObject.Find("AnimSpawnPoint").transform;
     }
 
     // Update is called once per frame
@@ -60,7 +65,7 @@ public class Sword : MonoBehaviour, IWeapon
     {
         animPrefab.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
         
-        if (playerController.FacingLeft)
+        if (PlayerController.Instance.FacingLeft)
         {
             animPrefab.GetComponent<SpriteRenderer>().flipX = true;
         }
@@ -69,7 +74,7 @@ public class Sword : MonoBehaviour, IWeapon
     // Animation Event
     public void SwingDownFlipAnimEvent()
     {
-        if (playerController.FacingLeft)
+        if (PlayerController.Instance.FacingLeft)
         {
             animPrefab.GetComponent<SpriteRenderer>().flipX = true;
         }
@@ -93,6 +98,6 @@ public class Sword : MonoBehaviour, IWeapon
         // Flip the weapon collider
         weaponCollider.transform.rotation = Quaternion.Euler(0, yAxisRotation, 0);
         // Flip the weapon gameobject
-        activeWeapon.transform.rotation = Quaternion.Euler(0, yAxisRotation, 0);
+        ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0, yAxisRotation, 0);
     }
 }
