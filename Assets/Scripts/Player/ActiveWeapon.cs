@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ActiveWeapon : Singleton<ActiveWeapon>
 {
-    [SerializeField] private MonoBehaviour currentActiveWeapon;
+    public MonoBehaviour CurrentActiveWeapon { get; set; }
 
     private PlayerControls playerControls;
     private bool attackButtonDown, isAttacking = false;
@@ -31,6 +31,16 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
         Attack();
     }
 
+    public void NewWeapon(MonoBehaviour newWeapon)
+    {
+        CurrentActiveWeapon = newWeapon;
+    }
+
+    public void SetWeaponNull()
+    {
+        CurrentActiveWeapon = null;
+    }
+
     public void SetIsAttacking(bool value)
     {
         isAttacking = value;
@@ -47,7 +57,7 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
 
         isAttacking = true;
         // Cast the current weapon to be IWeapon. Not sure why is isn't defined explicitly as IWeapon?
-        (currentActiveWeapon as IWeapon).Attack();
+        (CurrentActiveWeapon as IWeapon).Attack();
         attackButtonDown = false;
     }
 }

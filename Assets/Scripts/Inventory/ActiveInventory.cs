@@ -18,6 +18,9 @@ public class ActiveInventory : MonoBehaviour
         playerControls.Inventory.Keyboard.performed += ctx => ToggleActiveSlot((int)ctx.ReadValue<float>());
         // For Controller. We can use the same context scale trick, but pass either 1 or -1 and move the current index accordingly.
         playerControls.Inventory.Controller.performed += ctx => CycleActiveSlot((int)ctx.ReadValue<float>());
+
+        // Start the game with whatever is in the first slot.
+        ToggleActiveHighlight(0);
     }
 
     private void OnEnable()
@@ -62,6 +65,28 @@ public class ActiveInventory : MonoBehaviour
 
     private void ChangeActiveWeapon()
     {
-        Debug.Log(transform.GetChild(activeSlotInd).GetComponent<InventorySlot>()?.GetWeaponInfo()?.weaponPrefab.name);
+        // Destroy the old weapon prefab
+        if (ActiveWeapon.Instance.CurrentActiveWeapon != null)
+        {
+            Destroy(ActiveWeapon.Instance.CurrentActiveWeapon.gameObject);
+        }
+
+        // Get the weapon to spawn from the current active inventory slot
+        GameObject weaponToSpawn = transform.GetChild(activeSlotInd).GetComponent<InventorySlot>().GetWeaponInfo()?.weaponPrefab;
+
+        // Make sure the current active inventory slot actually has something to spawn
+        //if (!transform.GetChild(activeSlotInd).GetComponent<InventorySlot>()) // Leaving lesson code here in case mine has unforeseen bugs
+        if (!weaponToSpawn)
+        {
+            ActiveWeapon.Instance.SetWeaponNull();
+            return;
+        }
+
+        // Instantiate the weapon prefab
+        GameObject newWeapon = Instantiate(weaponToSpawn, ActiveWeapon.Instance.transform.position, Quaternion.identity);
+        newWeapon.transform.parent = ActiveWeapon.Instance.transform;
+
+        // Assign the newly created GameObject to our ActiveWeapon instance
+        ActiveWeapon.Instance.NewWeapon(newWeapon.GetComponent<MonoBehaviour>());
     }
 }

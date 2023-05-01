@@ -39097,7 +39097,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8202329e6227784888b8adb0b088dd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentActiveWeapon: {fileID: 0}
 --- !u!4 &1630733637 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4249509582555695440, guid: dd5711bd4c2a00f43b5d9e03e2006648, type: 3}
