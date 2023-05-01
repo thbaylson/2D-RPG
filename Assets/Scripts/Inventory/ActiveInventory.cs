@@ -17,6 +17,7 @@ public class ActiveInventory : MonoBehaviour
     {
         playerControls.Inventory.Keyboard.performed += ctx => ToggleActiveSlot((int)ctx.ReadValue<float>());
         // For Controller. We can use the same context scale trick, but pass either 1 or -1 and move the current index accordingly.
+        playerControls.Inventory.Controller.performed += ctx => CycleActiveSlot((int)ctx.ReadValue<float>());
     }
 
     private void OnEnable()
@@ -29,6 +30,22 @@ public class ActiveInventory : MonoBehaviour
         // The keyboard controls will range from 1-5. Our indexes of course start at zero. Subtract 1 to get the index
         //  from the keyboard button press.
         ToggleActiveHighlight(keyboardButton - 1);
+    }
+
+    private void CycleActiveSlot(int controllerInput)
+    {
+        // Get number of inventory slots
+        int numSlots = this.transform.childCount;
+
+        // Use modular arithmetic to cycle to the correct index.
+        int modulo = (activeSlotInd + controllerInput) % numSlots;
+        // If we are at 0, trying to cycle backwards needs to put us on the last index.
+        int newInd = modulo < 0 ? this.transform.childCount - 1 : modulo;
+        
+        if (newInd != activeSlotInd)
+        {
+            ToggleActiveHighlight(newInd);
+        }
     }
 
     private void ToggleActiveHighlight(int index)
