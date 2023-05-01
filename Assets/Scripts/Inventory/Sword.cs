@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sword : MonoBehaviour
+public class Sword : MonoBehaviour, IWeapon
 {
     [SerializeField] private GameObject slashAnimPrefab;
     [SerializeField] private Transform animSpawnPoint;
     [SerializeField] private Transform weaponCollider;
+    // CD can't be too short or there will be issues with collision detection
     [SerializeField] private float attackCoolDown = 1f;
 
-    private PlayerControls playerControls;
     private Animator myAnimator;
     private PlayerController playerController;
     private SpriteRenderer playerSpriteRenderer;
@@ -17,62 +17,29 @@ public class Sword : MonoBehaviour
 
     private GameObject animPrefab;
 
-    // CD can't be too short or there will be issues with collision detection
-    private bool attackButtonDown, isAttacking = false;
-
     private void Awake()
     {
         // This isn't great on performance. It'll change in the future.
         playerController = GetComponentInParent<PlayerController>();
         playerSpriteRenderer = playerController.GetComponent<SpriteRenderer>();
         activeWeapon = GetComponentInParent<ActiveWeapon>();
-        playerControls = new PlayerControls();
         myAnimator = GetComponent<Animator>();
-    }
-
-    private void OnEnable()
-    {
-        playerControls.Enable();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        playerControls.Combat.Attack.started += _ => StartAttacking();
-        playerControls.Combat.Attack.canceled += _ => StopAttacking();
     }
 
     // Update is called once per frame
     void Update()
     {
         AdjustDirection();
-        Attack();
-    }
-
-    private void StartAttacking()
-    {
-        attackButtonDown = true;
-    }
-
-    private void StopAttacking()
-    {
-        attackButtonDown = false;
     }
 
     private IEnumerator AttackCDRoutine()
     {
         yield return new WaitForSeconds(attackCoolDown);
-        isAttacking = false;
+        ActiveWeapon.Instance.SetIsAttacking(false);
     }
 
-    private void Attack()
+    public void Attack()
     {
-        // TODO: Consider if we really want the player to be able to auto-swing.
-        // If we are not attacking or we're already attacking, don't do the attack code
-        if(!attackButtonDown || isAttacking) { return; }
-
-        isAttacking = true;
-
         myAnimator.SetTrigger("Attack");
         weaponCollider.gameObject.SetActive(true);
 
