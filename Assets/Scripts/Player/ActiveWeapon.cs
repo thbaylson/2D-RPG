@@ -24,8 +24,6 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
     private void Start()
     {
         playerControls.Combat.Attack.started += _ => AttackInput();
-        //playerControls.Combat.Attack.started += _ => StartAttacking();
-        //playerControls.Combat.Attack.canceled += _ => StopAttacking();
     }
 
     private void Update()
@@ -43,20 +41,8 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
         attackButtonDown = true;
     }
 
-    //private void StartAttacking()
-    //{
-    //    attackButtonDown = true;
-    //}
-
-    //private void StopAttacking()
-    //{
-    //    attackButtonDown = false;
-    //}
-
     private void Attack()
     {
-        // TODO: Consider if we really want the player to be able to auto-swing.
-        // If we are not attacking or we're already attacking, don't do the attack code
         if (!attackButtonDown || isAttacking) { return; }
 
         isAttacking = true;
