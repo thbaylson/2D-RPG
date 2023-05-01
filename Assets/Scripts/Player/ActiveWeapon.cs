@@ -23,8 +23,9 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
     // Start is called before the first frame update
     private void Start()
     {
-        playerControls.Combat.Attack.started += _ => StartAttacking();
-        playerControls.Combat.Attack.canceled += _ => StopAttacking();
+        playerControls.Combat.Attack.started += _ => AttackInput();
+        //playerControls.Combat.Attack.started += _ => StartAttacking();
+        //playerControls.Combat.Attack.canceled += _ => StopAttacking();
     }
 
     private void Update()
@@ -37,15 +38,20 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
         isAttacking = value;
     }
 
-    private void StartAttacking()
+    private void AttackInput()
     {
         attackButtonDown = true;
     }
 
-    private void StopAttacking()
-    {
-        attackButtonDown = false;
-    }
+    //private void StartAttacking()
+    //{
+    //    attackButtonDown = true;
+    //}
+
+    //private void StopAttacking()
+    //{
+    //    attackButtonDown = false;
+    //}
 
     private void Attack()
     {
@@ -56,5 +62,6 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
         isAttacking = true;
         // Cast the current weapon to be IWeapon. Not sure why is isn't defined explicitly as IWeapon?
         (currentActiveWeapon as IWeapon).Attack();
+        attackButtonDown = false;
     }
 }
