@@ -7,6 +7,7 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
     public MonoBehaviour CurrentActiveWeapon { get; set; }
 
     private PlayerControls playerControls;
+    private float timeBetweenAttacks;
     private bool attackButtonDown, isAttacking = false;
 
     protected override void Awake()
@@ -24,6 +25,8 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
     private void Start()
     {
         playerControls.Combat.Attack.started += _ => AttackInput();
+
+        AttackCooldown();
     }
 
     private void Update()
@@ -34,6 +37,8 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
     public void NewWeapon(MonoBehaviour newWeapon)
     {
         CurrentActiveWeapon = newWeapon;
+        AttackCooldown();
+        timeBetweenAttacks = (CurrentActiveWeapon as IWeapon).GetWeaponInfo().weaponCooldown;
     }
 
     public void SetWeaponNull()
@@ -41,9 +46,18 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
         CurrentActiveWeapon = null;
     }
 
-    public void SetIsAttacking(bool value)
+    private void AttackCooldown()
     {
-        isAttacking = value;
+        isAttacking = true;
+        // Make sure if this coroutine is already running (possibly from a different weapon) to stop it first
+        StopAllCoroutines();
+        StartCoroutine(TimeBetweenAttacksRoutine());
+    }
+
+    private IEnumerator TimeBetweenAttacksRoutine()
+    {
+        yield return new WaitForSeconds(timeBetweenAttacks);
+        isAttacking = false;
     }
 
     private void AttackInput()
@@ -55,7 +69,7 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
     {
         if (!attackButtonDown || isAttacking) { return; }
 
-        isAttacking = true;
+        AttackCooldown();
         // Cast the current weapon to be IWeapon. Not sure why is isn't defined explicitly as IWeapon?
         // May get a null exception for this line if player quickly spams Attack and ChangeActiveWeapon
         (CurrentActiveWeapon as IWeapon).Attack();

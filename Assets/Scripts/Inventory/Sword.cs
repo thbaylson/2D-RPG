@@ -8,6 +8,7 @@ public class Sword : MonoBehaviour, IWeapon
     [SerializeField] private Transform animSpawnPoint;
     // CD can't be too short or there will be issues with collision detection
     [SerializeField] private float attackCoolDown = 1f;
+    [SerializeField] private WeaponInfo weaponInfo;
 
     private Animator myAnimator;
     private SpriteRenderer playerSpriteRenderer;
@@ -37,10 +38,9 @@ public class Sword : MonoBehaviour, IWeapon
         AdjustDirection();
     }
 
-    private IEnumerator AttackCDRoutine()
+    public WeaponInfo GetWeaponInfo()
     {
-        yield return new WaitForSeconds(attackCoolDown);
-        ActiveWeapon.Instance.SetIsAttacking(false);
+        return weaponInfo;
     }
 
     public void Attack()
@@ -50,8 +50,6 @@ public class Sword : MonoBehaviour, IWeapon
 
         animPrefab = Instantiate(slashAnimPrefab, animSpawnPoint.position, Quaternion.identity);
         animPrefab.transform.parent = this.transform.parent;
-
-        StartCoroutine(AttackCDRoutine());
     }
 
     // Animation Event

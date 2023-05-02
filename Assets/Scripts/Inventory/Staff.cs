@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class Staff : MonoBehaviour, IWeapon
 {
+    [SerializeField] private WeaponInfo weaponInfo;
+
     public void Attack()
     {
         Debug.Log("Staff Attack");
-        ActiveWeapon.Instance.SetIsAttacking(false);
+    }
+
+    public WeaponInfo GetWeaponInfo()
+    {
+        return weaponInfo;
     }
 }
