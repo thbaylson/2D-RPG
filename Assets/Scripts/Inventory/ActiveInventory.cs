@@ -84,6 +84,7 @@ public class ActiveInventory : MonoBehaviour
 
         // Instantiate the weapon prefab
         GameObject newWeapon = Instantiate(weaponToSpawn, ActiveWeapon.Instance.transform.position, Quaternion.identity);
+        ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         newWeapon.transform.parent = ActiveWeapon.Instance.transform;
 
         // Assign the newly created GameObject to our ActiveWeapon instance
