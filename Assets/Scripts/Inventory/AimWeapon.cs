@@ -29,12 +29,24 @@ public class AimWeapon : MonoBehaviour
 
         playerSpriteRenderer = PlayerController.Instance.transform.GetComponent<SpriteRenderer>();
 
-        // TODO: Start the weapon facing the same direction as the player
+        // Start with the weapon facing the same direction as the player
+        AimForward();
     }
 
     private void Update()
     {
         Aim();
+    }
+
+    private void AimForward()
+    {
+        // There may be a better way, but I know this way works.
+        //float playerFlipX = playerSpriteRenderer.flipX ? -180f : 0f;
+        //Debug.Log($"Player Flip X: {playerFlipX};");
+        //ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0f, 0f, playerFlipX);
+        //Debug.Log($"Active Weapon Rotation: {ActiveWeapon.Instance.transform.rotation};");
+        float playerFlipX = playerSpriteRenderer.flipX ? -1f : 1f;
+        lookDirection = new Vector2(playerFlipX, 0f);
     }
 
     private void AimInput(Vector2 controllerInput)
@@ -43,13 +55,20 @@ public class AimWeapon : MonoBehaviour
         // This makes sure there is control input, that it isn't a diagonal, (TODO:) and that it isn't pointing behind the player
         if (!controllerInput.Equals(Vector2.zero) && controllerInput.sqrMagnitude.Equals(1f))
         {
-            Debug.Log($"Controller Input: {controllerInput};");
+            //Debug.Log($"Controller Input: {controllerInput};");
             lookDirection = controllerInput;
         }
     }
 
     private void Aim()
     {
+        // Make sure the player isn't aiming behind their back.
+        bool aimBehind = playerSpriteRenderer.flipX && lookDirection.x == 1 || !playerSpriteRenderer.flipX && lookDirection.x == -1;
+        if (aimBehind)
+        {
+            AimForward();
+        }
+
         // If the player is "flipped" on the x axis, then the weapon "rotates" on the y axis
         float yAxisRotation = playerSpriteRenderer.flipX ? -180f : 0f;
 
@@ -60,8 +79,9 @@ public class AimWeapon : MonoBehaviour
 
 
         // Flip the weapon collider
-        weaponCollider.transform.rotation = Quaternion.Euler(0f, 0f, controllerAngle);
+        //weaponCollider.transform.rotation = Quaternion.Euler(0f, 0f, controllerAngle);
         // Flip the weapon gameobject
         ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0f, 0f, controllerAngle);
+        //Debug.Log($"Active Weapon Rotation: {ActiveWeapon.Instance.transform.rotation};");
     }
 }
