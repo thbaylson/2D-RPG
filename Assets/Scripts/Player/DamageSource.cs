@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class DamageSource : MonoBehaviour
 {
-    [SerializeField] private int damageAmount = 0;
-    [SerializeField] private float knockbackAmount = 0;
+    private int damageAmount;
+    private float knockbackAmount;
+
+    private void Start()
+    {
+        MonoBehaviour currentActiveWeapon = ActiveWeapon.Instance.CurrentActiveWeapon;
+        damageAmount = (currentActiveWeapon as IWeapon).GetWeaponInfo().weaponDamage;
+        knockbackAmount = (currentActiveWeapon as IWeapon).GetWeaponInfo().weaponKnockback;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

@@ -27238,7 +27238,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: af1956a4e4ccb4043871e67ba449c1f0, type: 2}
+  - {fileID: 2100000, guid: 2020f0175c6e7f847ae60128c0c7c174, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -56495,8 +56495,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e178644902707684b8c79cb2f879283a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageAmount: 2
-  knockbackAmount: 8
 --- !u!1 &1082328216
 GameObject:
   m_ObjectHideFlags: 3
