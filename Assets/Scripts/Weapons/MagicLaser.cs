@@ -5,6 +5,8 @@ using UnityEngine;
 public class MagicLaser : MonoBehaviour
 {
     [SerializeField] private float laserGrowTime = 2f;
+
+    private bool isGrowing = true;
     
     private CapsuleCollider2D capCollider;
     private Vector2 startColliderSize;
@@ -29,6 +31,14 @@ public class MagicLaser : MonoBehaviour
         AdjustDirection();
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<Indestructible>() && !collision.isTrigger)
+        {
+            isGrowing = false;
+        }
+    }
+
     public void UpdateLaserRange(float range)
     {
         this.range = range;
@@ -39,7 +49,7 @@ public class MagicLaser : MonoBehaviour
     {
         float timePassed = 0f;
 
-        while (spriteRenderer.size.x < range)
+        while (spriteRenderer.size.x < range && isGrowing)
         {
             timePassed += Time.deltaTime;
             float linearT = timePassed / laserGrowTime;

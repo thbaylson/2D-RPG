@@ -11,7 +11,7 @@ public class Staff : MonoBehaviour, IWeapon
     private Animator myAnimator;
     private SpriteRenderer playerSpriteRenderer;
 
-    readonly int AttackHash = Animator.StringToHash("Attack");
+    readonly int ATTACK_HASH = Animator.StringToHash("Attack");
 
     private void Awake()
     {
@@ -27,7 +27,7 @@ public class Staff : MonoBehaviour, IWeapon
 
     public void Attack()
     {
-        myAnimator.SetTrigger(AttackHash);
+        myAnimator.SetTrigger(ATTACK_HASH);
     }
 
     public void SpawnStaffProjectileAnimEvent()

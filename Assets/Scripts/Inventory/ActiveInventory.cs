@@ -72,17 +72,19 @@ public class ActiveInventory : MonoBehaviour
         }
 
         // Get the weapon to spawn from the current active inventory slot
-        GameObject weaponToSpawn = transform.GetChild(activeSlotInd).GetComponent<InventorySlot>().GetWeaponInfo()?.weaponPrefab;
+        Transform childTransform = transform.GetChild(activeSlotInd);
+        InventorySlot inventorySlot = childTransform.GetComponent<InventorySlot>();
+        WeaponInfo weaponInfo = inventorySlot.GetWeaponInfo();
 
         // Make sure the current active inventory slot actually has something to spawn
-        //if (!transform.GetChild(activeSlotInd).GetComponent<InventorySlot>()) // Leaving lesson code here in case mine has unforeseen bugs
-        if (!weaponToSpawn)
+        if (weaponInfo == null)
         {
             ActiveWeapon.Instance.SetWeaponNull();
             return;
         }
 
         // Instantiate the weapon prefab
+        GameObject weaponToSpawn = weaponInfo.weaponPrefab;
         GameObject newWeapon = Instantiate(weaponToSpawn, ActiveWeapon.Instance.transform.position, Quaternion.identity);
         ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         newWeapon.transform.parent = ActiveWeapon.Instance.transform;

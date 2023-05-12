@@ -9,9 +9,11 @@ public class EnemyPathfinding : MonoBehaviour
     private Rigidbody2D rb;
     private Knockback knockback;
     private Vector2 moveDir;
+    private SpriteRenderer spriteRenderer;
 
     private void Awake()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         knockback = GetComponent<Knockback>();
     }
@@ -24,6 +26,8 @@ public class EnemyPathfinding : MonoBehaviour
         // TODO: Every enemy on the screen will move in sync. Maybe make this a coroutine with random start/end times?
         float randomInfluence = Random.Range(-3, 3)/10;
         rb.MovePosition(rb.position + moveDir * ((moveSpeed + randomInfluence ) * Time.fixedDeltaTime));
+
+        spriteRenderer.flipX = moveDir.x < 0;
     }
 
     public void MoveTo(Vector2 targetPosition)

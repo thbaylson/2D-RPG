@@ -67,7 +67,8 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
 
     private void Attack()
     {
-        if (!attackButtonDown || isAttacking) { return; }
+        // Do not attack if we are not pressing the attack button, already attacking, or if we don't have a weapon
+        if (!attackButtonDown || isAttacking || (CurrentActiveWeapon == null)) { return; }
 
         AttackCooldown();
         // Cast the current weapon to be IWeapon. Not sure why is isn't defined explicitly as IWeapon?
