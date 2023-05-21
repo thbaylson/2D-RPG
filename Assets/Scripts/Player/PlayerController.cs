@@ -21,6 +21,7 @@ public class PlayerController : Singleton<PlayerController>
     private Rigidbody2D rb;
     private Animator myAnimator;
     private SpriteRenderer myRenderer;
+    private Knockback knockback;
 
     private float currentMoveSpeed;
     private bool facingLeft = false;
@@ -35,6 +36,7 @@ public class PlayerController : Singleton<PlayerController>
         rb = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
         myRenderer = GetComponent<SpriteRenderer>();
+        knockback = GetComponent<Knockback>();
     }
 
     private void OnEnable()
@@ -75,6 +77,9 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Move()
     {
+        // Don't let the player move if we're being knocked back. TODO: This might be a place to add Melee-like DI.
+        if (knockback.GettingKnockedBack) { return; }
+
         // Multiply floats first to make vector math more computationally efficient
         rb.MovePosition(rb.position + movement * (currentMoveSpeed * Time.fixedDeltaTime));
     }

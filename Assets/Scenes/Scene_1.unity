@@ -57663,6 +57663,9 @@ GameObject:
   - component: {fileID: 1630879409}
   - component: {fileID: 1630879410}
   - component: {fileID: 1630879411}
+  - component: {fileID: 1630879414}
+  - component: {fileID: 1630879413}
+  - component: {fileID: 1630879412}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -57854,6 +57857,48 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_SortAtRoot: 0
+--- !u!114 &1630879412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1630879404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b8f070482ef914478b64b029a907b47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whiteFlashMat: {fileID: 2100000, guid: 4fb90454fb4e3a9409508f1faab269a0, type: 2}
+  restoreDefaultMatTime: 0.1
+--- !u!114 &1630879413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1630879404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adb71ff70d3a943438e3d4626f8cd338, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockbackTime: 0.1
+--- !u!114 &1630879414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1630879404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8a5aea9abb9c344da9b6f1502e80902, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 5
+  knockbackThrustAmount: 10
+  invincibilityCooldown: 0.1
 --- !u!1 &1675848271
 GameObject:
   m_ObjectHideFlags: 0

@@ -26,7 +26,7 @@ public class Flash : MonoBehaviour
         StartCoroutine(FlashRoutine());
     }
 
-    private IEnumerator FlashRoutine()
+    public IEnumerator FlashRoutine()
     {
         spriteRenderer.material = whiteFlashMat;
         yield return new WaitForSeconds(restoreDefaultMatTime);
