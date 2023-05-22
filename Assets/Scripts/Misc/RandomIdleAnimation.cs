@@ -13,6 +13,9 @@ public class RandomIdleAnimation : MonoBehaviour
 
     private void Start()
     {
+        // Safety net null check. Not sure if this Should stay.
+        if (!myAnimator) { return; }
+
         // Gets the state information about the current animation. We will use this to get the animation's unique hash.
         AnimatorStateInfo state = myAnimator.GetCurrentAnimatorStateInfo(0);
         
