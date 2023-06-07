@@ -20,9 +20,7 @@ public class Bow : MonoBehaviour, IWeapon
     {
         myAnimator.SetTrigger(ATTACK_HASH);
         GameObject newArrow = Instantiate(arrowPrefab, arrowSpawnPoint.position, ActiveWeapon.Instance.transform.rotation);
-        // The bow has damage data, but can't use it because the bow doesn't have the collider. The arrow has a collider
-        //  and needs damage data, but doesn't inheritly have the data. Pass damage info from the bow to the arrow.
-        newArrow.GetComponent<Projectile>().SetWeaponInfo(weaponInfo);
+        newArrow.GetComponent<Projectile>().SetProjectileRange(weaponInfo.weaponRange);
     }
 
     public WeaponInfo GetWeaponInfo()

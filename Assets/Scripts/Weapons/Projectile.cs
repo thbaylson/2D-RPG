@@ -7,8 +7,9 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 22f;
     [SerializeField] private GameObject particleOnHitPrefabVFX;
+    [SerializeField] private bool isEnemyProjectile = false;
+    [SerializeField] private float projectileRange = 1f;
 
-    private WeaponInfo weaponInfo;
     private Vector3 startPosition;
 
     private void Start()
@@ -22,18 +23,25 @@ public class Projectile : MonoBehaviour
         DetectFireDistance();
     }
 
-    public void SetWeaponInfo(WeaponInfo weaponInfo)
+    public void SetProjectileRange(float projectileRange)
     {
-        this.weaponInfo = weaponInfo;
+        this.projectileRange = projectileRange;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         EnemyHealth enemyHealth = collision.gameObject.GetComponent<EnemyHealth>();
         Indestructible indestructible = collision.gameObject.GetComponent<Indestructible>();
+        PlayerHealth player = collision.gameObject.GetComponent<PlayerHealth>();
 
-        if(!collision.isTrigger && (enemyHealth || indestructible))
+        if(!collision.isTrigger && (enemyHealth || indestructible || player))
         {
+            // TODO: Maybe just make this "If the other thing isn't the same thing as me" ?
+            if (player && isEnemyProjectile)
+            {
+                player.TakeDamage(1, transform);
+            }
+
             Instantiate(particleOnHitPrefabVFX, transform.position, transform.rotation);
             Destroy(gameObject);
         }
@@ -41,7 +49,7 @@ public class Projectile : MonoBehaviour
 
     private void DetectFireDistance()
     {
-        if(Vector3.Distance(transform.position, startPosition) > weaponInfo.weaponRange)
+        if(Vector3.Distance(transform.position, startPosition) > projectileRange)
         {
             // Destroy this projectile once it exceeds its set range.
             Destroy(gameObject);
