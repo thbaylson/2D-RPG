@@ -28,22 +28,28 @@ public class Projectile : MonoBehaviour
         this.projectileRange = projectileRange;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        EnemyHealth enemyHealth = collision.gameObject.GetComponent<EnemyHealth>();
-        Indestructible indestructible = collision.gameObject.GetComponent<Indestructible>();
-        PlayerHealth player = collision.gameObject.GetComponent<PlayerHealth>();
+        EnemyHealth enemyHealth = other.gameObject.GetComponent<EnemyHealth>();
+        Indestructible indestructible = other.gameObject.GetComponent<Indestructible>();
+        PlayerHealth player = other.gameObject.GetComponent<PlayerHealth>();
 
-        if(!collision.isTrigger && (enemyHealth || indestructible || player))
+        // TODO: This method is a mess. Needs cleaning.
+        if(!other.isTrigger && (enemyHealth || indestructible || player))
         {
             // TODO: Maybe just make this "If the other thing isn't the same thing as me" ?
-            if (player && isEnemyProjectile)
+            if ((player && isEnemyProjectile) || (enemyHealth && !isEnemyProjectile))
             {
-                player.TakeDamage(1, transform);
+                // TODO: This feels gross. The player is always at risk of taking damage whenever any projectile collides with anything
+                player?.TakeDamage(1, transform);
+                Instantiate(particleOnHitPrefabVFX, transform.position, transform.rotation);
+                Destroy(gameObject);
+            }else if(!other.isTrigger && indestructible)
+            {
+                Instantiate(particleOnHitPrefabVFX, transform.position, transform.rotation);
+                Destroy(gameObject);
             }
 
-            Instantiate(particleOnHitPrefabVFX, transform.position, transform.rotation);
-            Destroy(gameObject);
         }
     }
 
