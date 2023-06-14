@@ -19536,12 +19536,28 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2824957671323837748, guid: 4082c8466c269764aa0f3f3644ed5235, type: 3}
+      propertyPath: angleSpread
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 2824957671323837748, guid: 4082c8466c269764aa0f3f3644ed5235, type: 3}
+      propertyPath: shootCooldown
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2824957671323837748, guid: 4082c8466c269764aa0f3f3644ed5235, type: 3}
       propertyPath: bulletMoveSpeed
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2824957671323837748, guid: 4082c8466c269764aa0f3f3644ed5235, type: 3}
+      propertyPath: startingDistance
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2824957671323837748, guid: 4082c8466c269764aa0f3f3644ed5235, type: 3}
       propertyPath: timeBetweenBursts
-      value: 0.3
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2824957671323837748, guid: 4082c8466c269764aa0f3f3644ed5235, type: 3}
+      propertyPath: projectilesPerBurst
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8829571966245015623, guid: 4082c8466c269764aa0f3f3644ed5235, type: 3}
       propertyPath: m_Name
