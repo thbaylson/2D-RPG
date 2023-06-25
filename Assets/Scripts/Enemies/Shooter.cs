@@ -8,10 +8,14 @@ public class Shooter : MonoBehaviour, IEnemy
     [SerializeField] private float bulletMoveSpeed;
     [SerializeField] private int burstCount;
     [SerializeField] private int projectilesPerBurst;
+    // If angleSpread is 359, then the first and last projectiles will fire at the same position
     [SerializeField][Range(0,359)] private float angleSpread;
     [SerializeField] private float startingDistance = 0.1f;
     [SerializeField] private float timeBetweenBursts;
     [SerializeField] private float shootCooldown = 1f;
+    // Shoot projectiles one at a time instead of all at once
+    [SerializeField] private bool stagger;
+    [SerializeField] private bool oscillate;
 
     // TODO: Maybe make this more generic, like "IsAttacking" and add getter to interface?
     private bool isShooting = false;
@@ -29,13 +33,44 @@ public class Shooter : MonoBehaviour, IEnemy
     {
         isShooting = true;
 
-        float angleStep, startAngle, currentAngle;
-        TargetConeOfInfluence(out angleStep, out startAngle, out currentAngle);
+        float angleStep, startAngle, currentAngle, endAngle;
+        float timeBetweenProjectiles = 0f;
 
+        // This first call only exists to get endAngle. If we are not oscillating, all of these values get re-calculated immediately
+        TargetConeOfInfluence(out angleStep, out startAngle, out currentAngle, out endAngle);
+
+        if (stagger)
+        {
+            // TODO: This is easily refactored with a tertiary statement during declaration
+            // This makes it so the time between each projectile in the burst is the same
+            timeBetweenProjectiles = timeBetweenBursts / projectilesPerBurst;
+        }
 
         // This represents one complete burst
         for (int i = 0; i < burstCount; i++)
         {
+            if (!oscillate)
+            {
+                // Recalculate cone of influence in case player moves
+                // TODO: Consider if this should stop firing bursts if player is out of attack range
+                TargetConeOfInfluence(out angleStep, out startAngle, out currentAngle, out endAngle);
+            }
+
+            // If we are oscillating and on every other burst
+            if(oscillate && (i % 2 == 0))
+            {
+                // Recalculate on every other burst
+                TargetConeOfInfluence(out angleStep, out startAngle, out currentAngle, out endAngle);
+            }
+            else if(oscillate)
+            {
+                // TODO: Fix every other burst potentially firing in the wrong direction
+                currentAngle = endAngle;
+                endAngle = startAngle;
+                startAngle = currentAngle;
+                angleStep *= -1;
+            }
+
             // This represents the individual bullets in a burst
             for (int j = 0; j < projectilesPerBurst; j++)
             {
@@ -52,22 +87,31 @@ public class Shooter : MonoBehaviour, IEnemy
 
                 // Get the next angle in the cone of influence
                 currentAngle += angleStep;
+
+                // Short pause after each shot so they don't come all at once
+                if (stagger)
+                {
+                    yield return new WaitForSeconds(timeBetweenProjectiles);
+                }
             }
 
             // Reset currentAngle between bursts
             currentAngle = startAngle;
-            yield return new WaitForSeconds(timeBetweenBursts);
-
-            // Recalculate cone of influence in case player moves
-            // TODO: Consider if this should stop firing bursts if player is out of attack range
-            TargetConeOfInfluence(out angleStep, out startAngle, out currentAngle);
+            // If we are not staggering projectiles, then fire continuously.
+            // TODO: This could be its own property. Continuous firing doesn't necessarily mean staggering too
+            if (!stagger)
+            {
+                yield return new WaitForSeconds(timeBetweenBursts);
+            }
         }
 
         yield return new WaitForSeconds(shootCooldown);
         isShooting = false;
     }
 
-    private void TargetConeOfInfluence(out float angleStep, out float startAngle, out float currentAngle)
+    // Notice that there is no return value. All references coming into this method are being modified and sent out again
+    // via the "out" keyword.
+    private void TargetConeOfInfluence(out float angleStep, out float startAngle, out float currentAngle, out float endAngle)
     {
         Vector2 targetDirection = PlayerController.Instance.transform.position - transform.position;
         // Rad2Deg is a constant that converts radians to degrees. Target angle is the angle (in degrees) of the
@@ -78,7 +122,7 @@ public class Shooter : MonoBehaviour, IEnemy
         float halfAngleSpread = 0f;
 
         startAngle = targetAngle;
-        float endAngle = targetAngle;
+        endAngle = targetAngle;
         currentAngle = targetAngle;
 
         // In other words, if angle spread IS 0, the object will shoot in a simple straight line
