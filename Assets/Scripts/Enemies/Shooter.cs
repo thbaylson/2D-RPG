@@ -1,21 +1,26 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Shooter : MonoBehaviour, IEnemy
 {
-    [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private float bulletMoveSpeed;
-    [SerializeField] private int burstCount;
-    [SerializeField] private int projectilesPerBurst;
-    // If angleSpread is 359, then the first and last projectiles will fire at the same position
-    [SerializeField][Range(0,359)] private float angleSpread;
+    [Header("Projectile")]
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private float projectileMoveSpeed;
     [SerializeField] private float startingDistance = 0.1f;
+
+    [Header("Burst Shape")]
+    [SerializeField] private int projectilesPerBurst;
+    [Tooltip("Reminder: The first and last projectiles will fire at the same position if this is 359.")]
+    [SerializeField][Range(0,359)] private float angleSpread;
+    [Tooltip("Shoot projectiles one at a time instead of all at once.")]
+    [SerializeField] private bool stagger;
+    [Tooltip("Reminder: Oscillate does nothing if Stagger is False.")]
+    [SerializeField] private bool oscillate;
+    [SerializeField] private int burstCount;
+    
+    [Header("Timing")]
     [SerializeField] private float timeBetweenBursts;
     [SerializeField] private float shootCooldown = 1f;
-    // Shoot projectiles one at a time instead of all at once
-    [SerializeField] private bool stagger;
-    [SerializeField] private bool oscillate;
 
     // TODO: Maybe make this more generic, like "IsAttacking" and add getter to interface?
     private bool isShooting = false;
@@ -71,18 +76,18 @@ public class Shooter : MonoBehaviour, IEnemy
                 angleStep *= -1;
             }
 
-            // This represents the individual bullets in a burst
+            // This represents the individual projectiles in a burst
             for (int j = 0; j < projectilesPerBurst; j++)
             {
-                Vector2 bulletPos = FindBulletSpawnPos(currentAngle);
+                Vector2 projectilePos = FindProjectileSpawnPos(currentAngle);
 
-                GameObject newBullet = Instantiate(bulletPrefab, bulletPos, Quaternion.identity);
-                newBullet.transform.right = newBullet.transform.position - transform.position;
+                GameObject newProjectile = Instantiate(projectilePrefab, projectilePos, Quaternion.identity);
+                newProjectile.transform.right = newProjectile.transform.position - transform.position;
 
                 // Not sure how this is different or better than creating a property and getting the component in start?
-                if (newBullet.TryGetComponent(out Projectile projectile))
+                if (newProjectile.TryGetComponent(out Projectile projectile))
                 {
-                    projectile.SetProjectileMoveSpeed(bulletMoveSpeed);
+                    projectile.SetProjectileMoveSpeed(projectileMoveSpeed);
                 }
 
                 // Get the next angle in the cone of influence
@@ -137,7 +142,7 @@ public class Shooter : MonoBehaviour, IEnemy
         }
     }
 
-    private Vector2 FindBulletSpawnPos(float currentAngle)
+    private Vector2 FindProjectileSpawnPos(float currentAngle)
     {
         float x = transform.position.x + startingDistance * Mathf.Cos(currentAngle * Mathf.Deg2Rad);
         float y = transform.position.y + startingDistance * Mathf.Sin(currentAngle * Mathf.Deg2Rad);

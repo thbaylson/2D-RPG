@@ -256,6 +256,7 @@ MonoBehaviour:
   roamChangeDirectionCooldown: 2
   attackRange: 5
   attackCooldown: 2
+  stopMovingWhileAttacking: 0
 --- !u!114 &4489053843151335277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,7 +323,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18b5715b571e70e45b6d514b6d2c3fee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 4442076167132411172, guid: bc9cd9a0fd2746645819639a60b000d8, type: 3}
+  projectilePrefab: {fileID: 4442076167132411172, guid: bc9cd9a0fd2746645819639a60b000d8, type: 3}
+  projectileMoveSpeed: 6
+  startingDistance: 0.2
+  projectilesPerBurst: 5
+  angleSpread: 99
+  stagger: 1
+  oscillate: 1
+  burstCount: 8
+  timeBetweenBursts: 1
+  shootCooldown: 0.5
 --- !u!210 &1775930113526485895
 SortingGroup:
   m_ObjectHideFlags: 0
