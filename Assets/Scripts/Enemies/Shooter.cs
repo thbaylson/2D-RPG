@@ -25,13 +25,29 @@ public class Shooter : MonoBehaviour, IEnemy
     // TODO: Maybe make this more generic, like "IsAttacking" and add getter to interface?
     private bool isShooting = false;
 
+    private void OnValidate()
+    {
+        // If stagger is turned off, then also turn off oscillate
+        oscillate = !stagger ? false : oscillate;
+
+        // If there is no spread and no staggering, only fire one projectile per burst (prevents overlap)
+        if(angleSpread == 0 && !stagger) { projectilesPerBurst = 1; }
+        
+        // Property minimums
+        projectilesPerBurst = projectilesPerBurst < 0 ? 0 : projectilesPerBurst;
+        burstCount = burstCount < 0 ? 0 : burstCount;
+        timeBetweenBursts = timeBetweenBursts < 0.1f ? 0.1f : timeBetweenBursts;
+        shootCooldown = shootCooldown < 0.1f ? 0.1f : shootCooldown;
+        startingDistance = startingDistance < 0.1f ? 0.1f : startingDistance;
+        projectileMoveSpeed = projectileMoveSpeed < 0.1f ? 0.1f : projectileMoveSpeed;
+    }
+
     public void Attack()
     {
         if (!isShooting)
         {
             StartCoroutine(ShootRoutine());
         }
-
     }
 
     private IEnumerator ShootRoutine()
@@ -46,7 +62,7 @@ public class Shooter : MonoBehaviour, IEnemy
 
         if (stagger)
         {
-            // TODO: This is easily refactored with a tertiary statement during declaration
+            // TODO: This is easily refactored with a ternary statement during declaration
             // This makes it so the time between each projectile in the burst is the same
             timeBetweenProjectiles = timeBetweenBursts / projectilesPerBurst;
         }
