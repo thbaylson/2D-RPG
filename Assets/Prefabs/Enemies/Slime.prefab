@@ -169,7 +169,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb86a38c19e11b642ac93a2cf60d6f4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roamChangeDirectionFloat: 2
+  enemyType: {fileID: 0}
+  roamChangeDirectionCooldown: 2
+  attackRange: 0
+  attackCooldown: 2
+  stopMovingWhileAttacking: 0
 --- !u!114 &6569834678474035005
 MonoBehaviour:
   m_ObjectHideFlags: 0

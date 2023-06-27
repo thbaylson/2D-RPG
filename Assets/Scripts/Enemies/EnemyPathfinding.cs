@@ -27,7 +27,15 @@ public class EnemyPathfinding : MonoBehaviour
         float randomInfluence = Random.Range(-3, 3)/10;
         rb.MovePosition(rb.position + moveDir * ((moveSpeed + randomInfluence ) * Time.fixedDeltaTime));
 
-        spriteRenderer.flipX = moveDir.x < 0;
+        // If moveDir.x == 0, then we never set flipX
+        if(moveDir.x < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else if (moveDir.x > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
     }
 
     public void MoveTo(Vector2 targetPosition)

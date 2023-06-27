@@ -6,7 +6,7 @@ public class EnemyAI : MonoBehaviour
 {
     [SerializeField] private MonoBehaviour enemyType;
     [SerializeField] private float roamChangeDirectionCooldown = 2f;
-    [SerializeField] private float attackRange = 5f;
+    [SerializeField] private float attackRange = 0f;
     [SerializeField] private float attackCooldown = 2f;
     [SerializeField] private bool stopMovingWhileAttacking;
 
