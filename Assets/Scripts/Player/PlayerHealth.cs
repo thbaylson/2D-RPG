@@ -40,8 +40,11 @@ public class PlayerHealth : MonoBehaviour
     {
         if(!canTakeDamage) { return; }
 
+        ScreenShakeManager.Instance.ShakeScreen();
+
         // TODO: knockbackThrustAmount should be based on the thing hitting the player, not a constant.
         knockback.GetKnockedback(hitTransform, knockbackThrustAmount);
+        
         StartCoroutine(flash.FlashRoutine());
         canTakeDamage = false;
         currentHealth -= damageAmount;
