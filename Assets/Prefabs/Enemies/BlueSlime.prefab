@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1326203631975437210, guid: 32af28f6baa8a024c901d481b0a7fb4e, type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1326203631975437210, guid: 32af28f6baa8a024c901d481b0a7fb4e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -72,11 +72,16 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: b9b96fb1ef52d9b4187b4d660911fd39, type: 3}
+    - target: {fileID: 6325587504534382767, guid: 32af28f6baa8a024c901d481b0a7fb4e, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 30f8ab4915ddea54a9699177ee5c3eb4, type: 2}
     - target: {fileID: 9218204154002711084, guid: 32af28f6baa8a024c901d481b0a7fb4e, type: 3}
       propertyPath: deathVFXPrefab
       value: 
       objectReference: {fileID: 3987786058773278327, guid: 8bb13ebbbe47bc444bfa4616af0938a3, type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4588430886988329896, guid: 32af28f6baa8a024c901d481b0a7fb4e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

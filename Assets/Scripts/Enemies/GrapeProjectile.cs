@@ -9,6 +9,7 @@ public class GrapeProjectile : MonoBehaviour
     [SerializeField] private float projectilePeak = 3f;
     [SerializeField] private GameObject projectileShadow;
     [SerializeField] private float shadowOffset = -0.3f;
+    [SerializeField] private GameObject splatterPrefab;
 
     void Start()
     {
@@ -37,6 +38,7 @@ public class GrapeProjectile : MonoBehaviour
             yield return null;
         }
 
+        Instantiate(splatterPrefab, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 
