@@ -11,6 +11,10 @@ public class Pickup : MonoBehaviour
     [Tooltip("Starting move speed of the pickup.")]
     [SerializeField] private float startMoveSpeed = 0f;
 
+    [SerializeField] private AnimationCurve animCurve;
+    [SerializeField] private float heightY = 1.5f;
+    [SerializeField] private float popDuration = 1f;
+
     private Rigidbody2D rb;
     private Vector3 moveDir;
     private float pickupDistance = 0f;
@@ -22,6 +26,11 @@ public class Pickup : MonoBehaviour
 
         pickupDistance = startPickupDistance;
         moveSpeed = startMoveSpeed;
+    }
+
+    private void Start()
+    {
+        StartCoroutine(AnimCurveSpawnRoutine());
     }
 
     // Each frame we get information about move direction and speed, but we don't actually move
@@ -65,6 +74,25 @@ public class Pickup : MonoBehaviour
         if (collision.gameObject.GetComponent<PlayerController>())
         {
             Destroy(gameObject);
+        }
+    }
+
+    private IEnumerator AnimCurveSpawnRoutine()
+    {
+        Vector2 startPos = transform.position;
+        Vector2 endPos = new Vector2(startPos.x + Random.Range(-0.5f, 0.5f), startPos.y + Random.Range(-0.5f, 0.5f));
+
+        float timePassed = 0f;
+        while (timePassed < popDuration)
+        {
+            timePassed += Time.deltaTime;
+            float timeOverDuration = timePassed / popDuration;
+            float heightOverTime = animCurve.Evaluate(timeOverDuration);
+            float currentHeight = Mathf.Lerp(0f, heightY, heightOverTime);
+
+            transform.position = Vector2.Lerp(startPos, endPos, timeOverDuration) + new Vector2(0f, currentHeight);
+
+            yield return null;
         }
     }
 }

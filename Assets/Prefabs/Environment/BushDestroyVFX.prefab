@@ -92,6 +92,14 @@ PrefabInstance:
       propertyPath: RotationModule.curve.minMaxState
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 7969441201422158621, guid: 8ad02f714403d02419f65d5cd1793a0b, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7969441201422158621, guid: 8ad02f714403d02419f65d5cd1793a0b, type: 3}
+      propertyPath: InitialModule.startLifetime.minScalar
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 8244388691131109552, guid: 8ad02f714403d02419f65d5cd1793a0b, type: 3}
       propertyPath: m_Name
       value: BushDestroyVFX
