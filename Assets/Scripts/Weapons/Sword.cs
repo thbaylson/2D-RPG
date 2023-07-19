@@ -35,7 +35,8 @@ public class Sword : MonoBehaviour, IWeapon
     // Update is called once per frame
     void Update()
     {
-        AdjustDirection();
+        //AdjustDirection();
+        MouseFollowWithOffset();
     }
 
     public WeaponInfo GetWeaponInfo()
@@ -72,9 +73,28 @@ public class Sword : MonoBehaviour, IWeapon
     // Animation Event
     public void SwingDownFlipAnimEvent()
     {
+        animPrefab.gameObject.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+
         if (PlayerController.Instance.FacingLeft)
         {
             animPrefab.GetComponent<SpriteRenderer>().flipX = true;
+        }
+    }
+
+    private void MouseFollowWithOffset()
+    {
+        Vector3 mousePos = Input.mousePosition;
+        Vector3 playerScreenPoint = Camera.main.WorldToScreenPoint(PlayerController.Instance.transform.position);
+
+        if (mousePos.x < playerScreenPoint.x)
+        {
+            ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0, -180, 0);
+            weaponCollider.transform.rotation = Quaternion.Euler(0, -180, 0);
+        }
+        else
+        {
+            ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0, 0, 0);
+            weaponCollider.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
     }
 

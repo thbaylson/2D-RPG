@@ -31,7 +31,7 @@ public class AimWeapon : MonoBehaviour
 
     private void Update()
     {
-        Aim();
+        //AimWithMouse();
     }
 
     private void AimForward()
@@ -50,7 +50,7 @@ public class AimWeapon : MonoBehaviour
         }
     }
 
-    private void Aim()
+    private void AimWithController()
     {
         // Make sure the player isn't aiming behind their back.
         bool aimBehind = playerSpriteRenderer.flipX && lookDirection.x == 1 || !playerSpriteRenderer.flipX && lookDirection.x == -1;
@@ -63,4 +63,13 @@ public class AimWeapon : MonoBehaviour
         float controllerAngle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
         ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0f, 0f, controllerAngle);
     }
+    //private void AimWithMouse()
+    //{
+    //    Vector3 mousePosition = Input.mousePosition;
+    //    mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+
+    //    Vector2 direction = transform.position - mousePosition;
+
+    //    transform.right = -direction;
+    //}
 }

@@ -54,11 +54,12 @@ public class PlayerController : Singleton<PlayerController>
     private void Update()
     {
         PlayerInput();
-        AdjustPlayerDirection();
     }
 
     private void FixedUpdate()
     {
+        //AdjustPlayerDirection();
+        AdjustPlayerDirectionWithMouse();
         Move();
     }
 
@@ -99,6 +100,23 @@ public class PlayerController : Singleton<PlayerController>
                 myRenderer.flipX = false;
                 facingLeft = false;
             }
+        }
+    }
+
+    private void AdjustPlayerDirectionWithMouse()
+    {
+        Vector3 mousePos = Input.mousePosition;
+        Vector3 playerScreenPoint = Camera.main.WorldToScreenPoint(transform.position);
+
+        if (mousePos.x < playerScreenPoint.x)
+        {
+            myRenderer.flipX = true;
+            facingLeft = true;
+        }
+        else
+        {
+            myRenderer.flipX = false;
+            facingLeft = false;
         }
     }
 
