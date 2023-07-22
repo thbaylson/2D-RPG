@@ -159,6 +159,7 @@ GameObject:
   - component: {fileID: 7194036080462208364}
   - component: {fileID: 3706834812584771636}
   - component: {fileID: 5229982520569516414}
+  - component: {fileID: 3099266849920775522}
   - component: {fileID: 2830458190467703490}
   - component: {fileID: 6099685846768960159}
   m_Layer: 0
@@ -402,6 +403,20 @@ MonoBehaviour:
   maxHealth: 3
   knockbackThrustAmount: 10
   invincibilityCooldown: 0.1
+--- !u!114 &3099266849920775522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3061239881518145147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8535fcfe4f5fe9d45bbc87322085140b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fullStaminaImage: {fileID: 21300000, guid: 5786a6e9b05625a458f427fe93ae327b, type: 3}
+  emptyStaminaImage: {fileID: 21300000, guid: 8961555d367bc1d4599636581c5b8ea9, type: 3}
 --- !u!114 &2830458190467703490
 MonoBehaviour:
   m_ObjectHideFlags: 0

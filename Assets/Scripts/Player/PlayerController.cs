@@ -125,11 +125,13 @@ public class PlayerController : Singleton<PlayerController>
         // TODO: Consider if we want to lock movement input while dashing. Ie, should the
         //  player be able to freely change direction mid-dash?
 
-        // If we are already dashing, don't dash again
-        if(isDashing) { return; }
+        // If we are already dashing OR if we're out of stamina, don't dash
+        if(isDashing || Stamina.Instance.CurrentStamina.Equals(0)) { return; }
 
         isDashing = true;
         trailRenderer.emitting = true;
+
+        Stamina.Instance.UseStamina();
 
         currentMoveSpeed = startingMoveSpeed * dashSpeedModifier;
         StartCoroutine(EndDashRoutine());
