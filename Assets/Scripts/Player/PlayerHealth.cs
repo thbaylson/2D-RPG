@@ -9,6 +9,8 @@ public class PlayerHealth : Singleton<PlayerHealth>
     [SerializeField] private float knockbackThrustAmount = 10f;
     [SerializeField] private float invincibilityCooldown = .05f;
 
+    const string HEALTH_SLIDER = "HealthSlider";
+
     private Knockback knockback;
     private Flash flash;
 
@@ -64,7 +66,6 @@ public class PlayerHealth : Singleton<PlayerHealth>
         currentHealth -= damageAmount;
         StartCoroutine(InvincibilityCooldownRoutine());
 
-        Debug.Log($"Player Health: {currentHealth}");
         UpdateHealthSlider();
         CheckPlayerDeath();
     }
@@ -73,6 +74,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
     {
         if(currentHealth <= 0)
         {
+            // If health happens to be less than 0, make it be 0
             currentHealth = 0;
             Debug.Log("Player Death");
         }
@@ -88,7 +90,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
     {
         if(healthSlider == null)
         {
-            healthSlider = GameObject.Find("HealthSlider").GetComponent<Slider>();
+            healthSlider = GameObject.Find(HEALTH_SLIDER).GetComponent<Slider>();
         }
 
         healthSlider.maxValue = maxHealth;

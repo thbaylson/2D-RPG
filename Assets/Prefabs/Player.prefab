@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1868015891338555556}
   - component: {fileID: 2199759168162720976}
+  - component: {fileID: 5809938106963349446}
   m_Layer: 0
   m_Name: ActiveWeapon
   m_TagString: Untagged
@@ -43,6 +44,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f8202329e6227784888b8adb0b088dd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5809938106963349446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 908183159426616954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f734b31b77dda1f48b09837354e5d839, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2763899897807439348
@@ -386,7 +399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8a5aea9abb9c344da9b6f1502e80902, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 3
   knockbackThrustAmount: 10
   invincibilityCooldown: 0.1
 --- !u!114 &2830458190467703490
