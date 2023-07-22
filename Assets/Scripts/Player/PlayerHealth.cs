@@ -15,7 +15,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
 
     readonly int DEATH_HASH = Animator.StringToHash("Death");
 
-    public bool isDead { get; private set; }
+    public bool IsDead { get; private set; }
 
     private Knockback knockback;
     private Flash flash;
@@ -34,7 +34,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
 
     private void Start()
     {
-        isDead = false;
+        IsDead = false;
         currentHealth = maxHealth;
         UpdateHealthSlider();
     }
@@ -80,9 +80,9 @@ public class PlayerHealth : Singleton<PlayerHealth>
     private void CheckPlayerDeath()
     {
         // If health is zero or less than zero AND we aren't already dead, die
-        if(currentHealth <= 0 && !isDead)
+        if(currentHealth <= 0 && !IsDead)
         {
-            isDead = true;
+            IsDead = true;
             Destroy(ActiveWeapon.Instance.gameObject);
 
             // If health happens to be less than 0, make it be 0
@@ -97,6 +97,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
     {
         yield return new WaitForSeconds(2f);
         Destroy(gameObject);
+        Stamina.Instance.ReplenishStaminaOnDeath();
         SceneManager.LoadScene(TOWN_SCENE);
     }
 

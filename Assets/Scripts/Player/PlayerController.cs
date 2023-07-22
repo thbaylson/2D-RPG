@@ -86,7 +86,7 @@ public class PlayerController : Singleton<PlayerController>
     private void Move()
     {
         // Don't let the player move if we're being knocked back. TODO: This might be a place to add Melee-like DI.
-        if (knockback.GettingKnockedBack || PlayerHealth.Instance.isDead) { return; }
+        if (knockback.GettingKnockedBack || PlayerHealth.Instance.IsDead) { return; }
 
         // Multiply floats first to make vector math more computationally efficient
         rb.MovePosition(rb.position + movement * (currentMoveSpeed * Time.fixedDeltaTime));

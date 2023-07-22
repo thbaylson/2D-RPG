@@ -31,49 +31,53 @@ public class Stamina : Singleton<Stamina>
     {
         CurrentStamina--;
         UpdateStaminaImages();
+        // TODO: This feels gross to stop all when there's only one to stop. If I add more later, remember that this is here!
+        StopAllCoroutines();
+        StartCoroutine(RefreshStaminaRoutine());
     }
 
     public void RefreshStamina()
     {
         // Make sure we never have more stamina than the max
-        if(CurrentStamina < maxStamina)
+        if(CurrentStamina < maxStamina && !PlayerHealth.Instance.IsDead)
         {
             CurrentStamina++;
             UpdateStaminaImages();
         }
     }
 
-    private IEnumerator RefreshStaminaRoutine()
+    public void ReplenishStaminaOnDeath()
     {
-        while (true)
-        {
-            yield return new WaitForSeconds(staminaRefreshRate);
-            RefreshStamina();
-        }
+        CurrentStamina = startingStamina;
+        UpdateStaminaImages();
     }
 
     private void UpdateStaminaImages()
     {
         for(int i = 0; i < maxStamina; i++)
         {
+            Transform child = staminaContainer.GetChild(i);
+            Image image = child?.GetComponent<Image>();
+
             // Index starts at 0, but stamina globes start counting at 1
             if(i <= CurrentStamina - 1)
             {
-                staminaContainer.GetChild(i).GetComponent<Image>().sprite = fullStaminaImage;
+                image.sprite = fullStaminaImage;
             }
             else
             {
-                staminaContainer.GetChild(i).GetComponent<Image>().sprite = emptyStaminaImage;
+                image.sprite = emptyStaminaImage;
             }
         }
+    }
 
-        // TODO: Add visual feedback for stamina refreshing over time. Reconsider when we call this.
-        // Once we update stamina, either from using or refreshing, start a timer to refresh it over time
-        if(CurrentStamina < maxStamina)
+    // TODO: Add visual feedback for stamina refreshing over time.
+    private IEnumerator RefreshStaminaRoutine()
+    {
+        while (true)
         {
-            // TODO: This feels gross to stop all when there's only one to stop. If I add more later, remember that this is here!
-            StopAllCoroutines();
-            StartCoroutine(RefreshStaminaRoutine());
+            yield return new WaitForSeconds(staminaRefreshRate);
+            RefreshStamina();
         }
     }
 }

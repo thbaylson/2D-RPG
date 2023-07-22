@@ -71,6 +71,9 @@ public class ActiveInventory : Singleton<ActiveInventory>
 
     private void ChangeActiveWeapon()
     {
+        // Don't try to change weapons if the player is dead
+        if (PlayerHealth.Instance.IsDead) { return; }
+
         // Destroy the old weapon prefab
         if (ActiveWeapon.Instance.CurrentActiveWeapon != null)
         {
