@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : Singleton<PlayerHealth>
 {
@@ -10,6 +11,11 @@ public class PlayerHealth : Singleton<PlayerHealth>
     [SerializeField] private float invincibilityCooldown = .05f;
 
     const string HEALTH_SLIDER = "HealthSlider";
+    const string TOWN_SCENE = "Town";
+
+    readonly int DEATH_HASH = Animator.StringToHash("Death");
+
+    public bool isDead { get; private set; }
 
     private Knockback knockback;
     private Flash flash;
@@ -28,6 +34,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
 
     private void Start()
     {
+        isDead = false;
         currentHealth = maxHealth;
         UpdateHealthSlider();
     }
@@ -72,12 +79,25 @@ public class PlayerHealth : Singleton<PlayerHealth>
 
     private void CheckPlayerDeath()
     {
-        if(currentHealth <= 0)
+        // If health is zero or less than zero AND we aren't already dead, die
+        if(currentHealth <= 0 && !isDead)
         {
+            isDead = true;
+            Destroy(ActiveWeapon.Instance.gameObject);
+
             // If health happens to be less than 0, make it be 0
             currentHealth = 0;
-            Debug.Log("Player Death");
+
+            GetComponent<Animator>().SetTrigger(DEATH_HASH);
+            StartCoroutine(DeathLoadSceneRoutine());
         }
+    }
+
+    private IEnumerator DeathLoadSceneRoutine()
+    {
+        yield return new WaitForSeconds(2f);
+        Destroy(gameObject);
+        SceneManager.LoadScene(TOWN_SCENE);
     }
 
     private IEnumerator InvincibilityCooldownRoutine()

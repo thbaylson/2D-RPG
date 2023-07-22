@@ -44,11 +44,18 @@ public class PlayerController : Singleton<PlayerController>
         playerControls.Enable();
     }
 
+    private void OnDisable()
+    {
+        playerControls.Disable();
+    }
+
     void Start()
     {
         playerControls.Combat.Dash.performed += _ => Dash();
 
         currentMoveSpeed = startingMoveSpeed;
+
+        ActiveInventory.Instance.EquipStartingWeapon();
     }
 
     private void Update()
@@ -79,7 +86,7 @@ public class PlayerController : Singleton<PlayerController>
     private void Move()
     {
         // Don't let the player move if we're being knocked back. TODO: This might be a place to add Melee-like DI.
-        if (knockback.GettingKnockedBack) { return; }
+        if (knockback.GettingKnockedBack || PlayerHealth.Instance.isDead) { return; }
 
         // Multiply floats first to make vector math more computationally efficient
         rb.MovePosition(rb.position + movement * (currentMoveSpeed * Time.fixedDeltaTime));
