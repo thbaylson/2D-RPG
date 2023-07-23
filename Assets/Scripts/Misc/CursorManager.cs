@@ -19,6 +19,9 @@ public class CursorManager : Singleton<CursorManager>
         // Hides the OS cursor
         Cursor.visible = false;
 
+        // Lock the cursor
+        Cursor.lockState = CursorLockMode.Locked;
+
         // Is only true if playing from the editor.
         if (Application.isEditor)
         {
@@ -34,13 +37,19 @@ public class CursorManager : Singleton<CursorManager>
 
     void Update()
     {
+        // Should probably cut this out before building.
+        if (Application.isEditor) { Cursor.visible = false; }
+
+        // If a controller is being used, hide the custom cursor
+        if(PlayerController.Instance.IsControllerControls) { image.enabled = false; }
+
+        // If we're using a controller, don't interact with the mouse
+        if(PlayerController.Instance.IsControllerControls) { return; }
+        
         //TODO: Consider only showing the cursor when the bow is selected
 
         //Vector2 cursorPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 cursorPos = Input.mousePosition;
         image.rectTransform.position = cursorPos;
-
-        // Should probably cut this out before building.
-        if (Application.isEditor) { Cursor.visible = false; }
     }
 }
