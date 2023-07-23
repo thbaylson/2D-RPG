@@ -33830,6 +33830,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cameras
       objectReference: {fileID: 0}
+    - target: {fileID: 4109951288328048618, guid: 6d5c97d6eb0702d4db435bdf4c43a12f, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].x
+      value: 12.702756
+      objectReference: {fileID: 0}
+    - target: {fileID: 4109951288328048618, guid: 6d5c97d6eb0702d4db435bdf4c43a12f, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].x
+      value: 12.702755
+      objectReference: {fileID: 0}
+    - target: {fileID: 4109951288328048618, guid: 6d5c97d6eb0702d4db435bdf4c43a12f, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].y
+      value: 14.7
+      objectReference: {fileID: 0}
     - target: {fileID: 4310008042176044185, guid: 6d5c97d6eb0702d4db435bdf4c43a12f, type: 3}
       propertyPath: m_RootOrder
       value: 5
