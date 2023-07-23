@@ -35,8 +35,13 @@ public class Sword : MonoBehaviour, IWeapon
     // Update is called once per frame
     void Update()
     {
-        //AdjustDirection();
-        MouseFollowWithOffset();
+        if(PlayerController.Instance.IsControllerControls){
+            AdjustDirection();
+        }
+        else
+        {
+            MouseFollowWithOffset();
+        }
     }
 
     public WeaponInfo GetWeaponInfo()

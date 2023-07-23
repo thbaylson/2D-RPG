@@ -31,7 +31,13 @@ public class AimWeapon : MonoBehaviour
 
     private void Update()
     {
-        //AimWithMouse();
+        if(PlayerController.Instance.IsControllerControls){
+            AimWithController();
+        }
+        else
+        {
+            AimWithMouse();
+        }
     }
 
     private void AimForward()
@@ -63,13 +69,14 @@ public class AimWeapon : MonoBehaviour
         float controllerAngle = Mathf.Atan2(lookDirection.y, lookDirection.x) * Mathf.Rad2Deg;
         ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0f, 0f, controllerAngle);
     }
-    //private void AimWithMouse()
-    //{
-    //    Vector3 mousePosition = Input.mousePosition;
-    //    mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
-    //    Vector2 direction = transform.position - mousePosition;
+    private void AimWithMouse()
+    {
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
-    //    transform.right = -direction;
-    //}
+        Vector2 direction = transform.position - mousePosition;
+
+        transform.right = -direction;
+    }
 }

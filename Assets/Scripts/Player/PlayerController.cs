@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class PlayerController : Singleton<PlayerController>
 {
     public bool FacingLeft { get { return facingLeft; } }
+    public bool IsControllerControls { get {return isControllerControls; } }
 
     [SerializeField] private TrailRenderer trailRenderer;
     // This weapon collider was made specifically for the sword weapon. Why would the player be the only
@@ -26,6 +28,8 @@ public class PlayerController : Singleton<PlayerController>
     private float currentMoveSpeed;
     private bool facingLeft = false;
     private bool isDashing = false;
+
+    private bool isControllerControls = false;
 
     // We are inheriting from Singleton, which has its own Awake. We need to make sure both get called.
     protected override void Awake()
@@ -56,6 +60,8 @@ public class PlayerController : Singleton<PlayerController>
         currentMoveSpeed = startingMoveSpeed;
 
         ActiveInventory.Instance.EquipStartingWeapon();
+
+        DetectController();
     }
 
     private void Update()
@@ -65,8 +71,14 @@ public class PlayerController : Singleton<PlayerController>
 
     private void FixedUpdate()
     {
-        //AdjustPlayerDirection();
-        AdjustPlayerDirectionWithMouse();
+        if(isControllerControls){
+            AdjustPlayerDirection();
+        }
+        else
+        {
+            AdjustPlayerDirectionWithMouse();
+        }
+        
         Move();
     }
 
@@ -75,8 +87,24 @@ public class PlayerController : Singleton<PlayerController>
         return weaponCollider;
     }
 
+    private void DetectController()
+    {
+        // Get a list of everything Unity thinks is a controller
+        var controllers = Input.GetJoystickNames();
+        foreach(string c in controllers)
+        {
+            // If this isn't a virtual joystick or an empty string, then it may be a real controller
+            if(!c.Equals("vJoy - Virtual Joystick") && !c.Equals(string.Empty))
+            {
+                Debug.Log(c);
+                isControllerControls = true;
+            }
+        }
+    }
+
     private void PlayerInput()
     {
+        // TODO: May need separate M&K Move from Controller Move
         movement = playerControls.Movement.Move.ReadValue<Vector2>();
 
         myAnimator.SetFloat("moveX", movement.x);

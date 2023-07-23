@@ -24,7 +24,7 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(int damageAmount, float knockbackAmount)
     {
-        Debug.Log($"{name} took {damageAmount} damage with {knockbackAmount} knockback!");
+        //Debug.Log($"{name} took {damageAmount} damage with {knockbackAmount} knockback!");
         currentHealth = (damageAmount >= currentHealth) ? 0 : currentHealth - damageAmount;
         flash.FlashAction();
         knockback.GetKnockedback(PlayerController.Instance.transform, knockbackAmount);

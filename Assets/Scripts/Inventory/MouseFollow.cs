@@ -6,7 +6,10 @@ public class MouseFollow : MonoBehaviour
 {
     void Update()
     {
-        FaceMouse();
+        // If we are not using the controller, follow the mouse
+        if(!PlayerController.Instance.IsControllerControls){
+            FaceMouse();
+        }
     }
 
     private void FaceMouse()
