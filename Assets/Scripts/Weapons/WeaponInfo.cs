@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "New Weapon")]
+[CreateAssetMenu(fileName = "WeaponName", menuName = "Items/New Weapon")]
 public class WeaponInfo : ScriptableObject
 {
     // TODO: Maybe refactor this to remove "weapon" from all these names.
