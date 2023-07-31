@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
-    [SerializeField] private string message = "Hello World!";
+    [SerializeField] private string message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 
     public void Interact()
     {
-        //do stuff
+        Debug.Log(message);
     }
 }

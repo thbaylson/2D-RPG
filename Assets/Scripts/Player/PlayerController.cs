@@ -187,16 +187,24 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Interact()
     {
-        Debug.Log("INTERACTING");
-        //ContactFilter2D filter = new ContactFilter2D();
-        //filter.useLayerMask = true;
-        //filter.SetLayerMask(LayerMask.GetMask("Interactable"));
+        // We may be colliding with several things at once. May need to consider priority
         Collider2D[] interactables = new Collider2D[5];
 
-        int numInteractables = rb.OverlapCollider(new ContactFilter2D().NoFilter(), interactables);
+        rb.OverlapCollider(new ContactFilter2D().NoFilter(), interactables);
         foreach(Collider2D i in interactables)
         {
-            Debug.Log(i.gameObject.name);
+            // Make sure we're actually colliding with something and that it has a gameobject
+            if(i?.gameObject != null)
+            {
+                Interactable actable = i.GetComponent<Interactable>();
+                // Make sure the thing has the Interactable class
+                if (actable != null)
+                {
+                    actable.Interact();
+                    // Once we interact with one thing, don't interact with anything else
+                    break;
+                }
+            }
         }
     }
 }
