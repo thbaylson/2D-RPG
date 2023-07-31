@@ -18,6 +18,8 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private float dashTime = .2f;
     [SerializeField] private float dashCD = .25f;
 
+    [SerializeField] private float interactionRange = 1f;
+
     private PlayerControls playerControls;
     private Vector2 movement;
     private Rigidbody2D rb;
@@ -56,6 +58,7 @@ public class PlayerController : Singleton<PlayerController>
     void Start()
     {
         playerControls.Combat.Dash.performed += _ => Dash();
+        playerControls.Action.Interact.performed += _ => Interact();
 
         currentMoveSpeed = startingMoveSpeed;
 
@@ -71,7 +74,8 @@ public class PlayerController : Singleton<PlayerController>
 
     private void FixedUpdate()
     {
-        if(isControllerControls){
+        if(isControllerControls)
+        {
             AdjustPlayerDirection();
         }
         else
@@ -179,5 +183,20 @@ public class PlayerController : Singleton<PlayerController>
         trailRenderer.emitting = false;
         yield return new WaitForSeconds(dashCD);
         isDashing = false;
+    }
+
+    private void Interact()
+    {
+        Debug.Log("INTERACTING");
+        //ContactFilter2D filter = new ContactFilter2D();
+        //filter.useLayerMask = true;
+        //filter.SetLayerMask(LayerMask.GetMask("Interactable"));
+        Collider2D[] interactables = new Collider2D[5];
+
+        int numInteractables = rb.OverlapCollider(new ContactFilter2D().NoFilter(), interactables);
+        foreach(Collider2D i in interactables)
+        {
+            Debug.Log(i.gameObject.name);
+        }
     }
 }
