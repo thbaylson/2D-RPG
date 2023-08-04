@@ -6,6 +6,8 @@ namespace RPG.Dialogue.Editor
 {
     public class DialogueEditor : EditorWindow
     {
+        private string[] fruit = { "Apple", "Orange", "Pear" };
+
         [MenuItem("Window/Dialogue Editor")]
         public static void ShowEditorWindow()
         {
@@ -24,6 +26,14 @@ namespace RPG.Dialogue.Editor
                 return true;
             }
             return false;
+        }
+
+        private void OnGUI()
+        {
+            foreach(string s in fruit)
+            {
+                EditorGUILayout.LabelField(string.Format("{0}", s));
+            }
         }
     }
 }
