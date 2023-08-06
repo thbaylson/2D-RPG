@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7539711016300300940}
-  - component: {fileID: 7849292183171276027}
+  - component: {fileID: 6451557292307395339}
   - component: {fileID: 3985794820762507122}
   m_Layer: 0
   m_Name: SavingSystem
@@ -31,9 +31,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7849292183171276027
+--- !u!114 &6451557292307395339
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,7 +42,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4502873303716030860}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eaf7799fe586d954cb6dc340a21fc22d, type: 3}
+  m_Script: {fileID: 11500000, guid: 0309a80e48dd57843a2cdf8ace74ddd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &3985794820762507122
