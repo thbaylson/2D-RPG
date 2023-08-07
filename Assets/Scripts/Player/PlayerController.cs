@@ -21,6 +21,7 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private float interactionRange = 1f;
 
     private PlayerControls playerControls;
+    private PlayerHealth playerHealth;
     private Vector2 movement;
     private Rigidbody2D rb;
     private Animator myAnimator;
@@ -43,6 +44,8 @@ public class PlayerController : Singleton<PlayerController>
         myAnimator = GetComponent<Animator>();
         myRenderer = GetComponent<SpriteRenderer>();
         knockback = GetComponent<Knockback>();
+
+        playerHealth = FindObjectOfType<PlayerHealth>();
     }
 
     private void OnEnable()
@@ -118,7 +121,7 @@ public class PlayerController : Singleton<PlayerController>
     private void Move()
     {
         // Don't let the player move if we're being knocked back. TODO: This might be a place to add Melee-like DI.
-        if (knockback.GettingKnockedBack || PlayerHealth.Instance.IsDead) { return; }
+        if (knockback.GettingKnockedBack || playerHealth.IsDead) { return; }
 
         // Multiply floats first to make vector math more computationally efficient
         rb.MovePosition(rb.position + movement * (currentMoveSpeed * Time.fixedDeltaTime));

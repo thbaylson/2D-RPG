@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using RPG.Saving;
+using Newtonsoft.Json.Linq;
 
-public class PlayerHealth : Singleton<PlayerHealth>
+public class PlayerHealth : MonoBehaviour, IJsonSaveable
 {
     [SerializeField] private int maxHealth = 1;
     [SerializeField] private float knockbackThrustAmount = 10f;
@@ -25,9 +27,8 @@ public class PlayerHealth : Singleton<PlayerHealth>
     private int currentHealth;
     private bool canTakeDamage = true;
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
         flash = GetComponent<Flash>();
         knockback = GetComponent<Knockback>();
     }
@@ -61,18 +62,23 @@ public class PlayerHealth : Singleton<PlayerHealth>
 
     public void TakeDamage(int damageAmount, Transform hitTransform)
     {
-        if(!canTakeDamage) { return; }
+        if (!canTakeDamage) { return; }
 
         ScreenShakeManager.Instance.ShakeScreen();
 
         // TODO: knockbackThrustAmount should be based on the thing hitting the player, not a constant.
         knockback.GetKnockedback(hitTransform, knockbackThrustAmount);
-        
+
         StartCoroutine(flash.FlashRoutine());
         canTakeDamage = false;
         currentHealth -= damageAmount;
         StartCoroutine(InvincibilityCooldownRoutine());
 
+        UpdateState();
+    }
+
+    private void UpdateState()
+    {
         UpdateHealthSlider();
         CheckPlayerDeath();
     }
@@ -116,5 +122,16 @@ public class PlayerHealth : Singleton<PlayerHealth>
 
         healthSlider.maxValue = maxHealth;
         healthSlider.value = currentHealth;
+    }
+
+    public JToken CaptureAsJToken()
+    {
+        return JToken.FromObject(currentHealth);
+    }
+
+    public void RestoreFromJToken(JToken state)
+    {
+        currentHealth = state.ToObject<int>();
+        UpdateState();
     }
 }
