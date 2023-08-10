@@ -40,12 +40,11 @@ public class PlayerController : Singleton<PlayerController>
         base.Awake();
 
         playerControls = new PlayerControls();
+        playerHealth = GetComponent<PlayerHealth>();
         rb = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
         myRenderer = GetComponent<SpriteRenderer>();
         knockback = GetComponent<Knockback>();
-
-        playerHealth = FindObjectOfType<PlayerHealth>();
     }
 
     private void OnEnable()

@@ -34838,11 +34838,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd5711bd4c2a00f43b5d9e03e2006648, type: 3}
---- !u!1 &1322061358 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3061239881518145147, guid: c4202dee0c4e6c44a8eb89db2332b674, type: 3}
-  m_PrefabInstance: {fileID: 2103910301}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1338239452
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38442,13 +38437,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9164043435913182488, guid: c4202dee0c4e6c44a8eb89db2332b674, type: 3}
+      propertyPath: capturePosition
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9164043435913182488, guid: c4202dee0c4e6c44a8eb89db2332b674, type: 3}
+      propertyPath: uniqueIdentifier
+      value: 87f6df34-ba97-4539-8ac7-c5d26bd04675
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3061239881518145147, guid: c4202dee0c4e6c44a8eb89db2332b674, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2120324684}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4202dee0c4e6c44a8eb89db2332b674, type: 3}
 --- !u!4 &2105805745 stripped
 Transform:
@@ -38460,19 +38460,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6509055721576938721, guid: c4202dee0c4e6c44a8eb89db2332b674, type: 3}
   m_PrefabInstance: {fileID: 2103910301}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2120324684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1322061358}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14f13bd2c86d88d439d9306d1481dec3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uniqueIdentifier: 9c76f070-a44e-4e79-bb27-37de3647a167
 --- !u!114 &125621137440554855
 MonoBehaviour:
   m_ObjectHideFlags: 0

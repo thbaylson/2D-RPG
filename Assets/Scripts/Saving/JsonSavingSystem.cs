@@ -8,6 +8,10 @@ using UnityEngine.SceneManagement;
 
 namespace RPG.Saving
 {
+    /// <summary>
+    /// Saves game data in a json format.
+    /// TODO: Consider encrypting save data so it isn't easily modified: https://gitlab.com/Mnemoth42/RPG/-/wikis/Json%205%20Saving%20Strategies
+    /// </summary>
     public class JsonSavingSystem : MonoBehaviour
     {
         private const string extension = ".json";
@@ -122,8 +126,14 @@ namespace RPG.Saving
             }
         }
 
+        /// <summary>
+        /// OS-independent way to build a path to the location Unity uses for persistent data.
+        /// </summary>
+        /// <param name="saveFile">Name of save file.</param>
+        /// <returns>A file path to the named save file.</returns>
         private string GetPathFromSaveFile(string saveFile)
         {
+            // Application.persistentDataPath is the default location Unity knows to save persistent data to
             return Path.Combine(Application.persistentDataPath, saveFile + extension);
         }
     }

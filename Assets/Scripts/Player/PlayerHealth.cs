@@ -13,6 +13,7 @@ public class PlayerHealth : MonoBehaviour, IJsonSaveable
     [SerializeField] private float invincibilityCooldown = .05f;
 
     const string HEALTH_SLIDER = "HealthSlider";
+    // TODO: Consider if we ALWAYS want to respawn in the first town scene.
     const string TOWN_SCENE = "Town";
 
     readonly int DEATH_HASH = Animator.StringToHash("Death");
@@ -86,7 +87,7 @@ public class PlayerHealth : MonoBehaviour, IJsonSaveable
     private void CheckPlayerDeath()
     {
         // If health is zero or less than zero AND we aren't already dead, die
-        if(currentHealth <= 0 && !IsDead)
+        if (currentHealth <= 0 && !IsDead)
         {
             IsDead = true;
             Destroy(ActiveWeapon.Instance.gameObject);

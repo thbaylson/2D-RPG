@@ -10,6 +10,7 @@ namespace RPG.Saving
     public class JsonSaveableEntity : MonoBehaviour
     {
         [SerializeField] string uniqueIdentifier = "";
+        [SerializeField] bool capturePosition = false;
 
         // Cached state
         static Dictionary<string, JsonSaveableEntity> globalLookup = new Dictionary<string, JsonSaveableEntity>();
@@ -26,7 +27,7 @@ namespace RPG.Saving
             // state and stateDict are the same object, but this lets us treat it as a Dict before returning JObject
             IDictionary<string, JToken> stateDict = state;
             // Get a list of everything that is saveable
-            foreach(IJsonSaveable jsonSaveable in GetComponents<IJsonSaveable>())
+            foreach (IJsonSaveable jsonSaveable in GetComponents<IJsonSaveable>())
             {
                 // Convert the saveable object into a JToken
                 JToken token = jsonSaveable.CaptureAsJToken();
@@ -34,6 +35,16 @@ namespace RPG.Saving
                 // StateDictionary[component] = token
                 stateDict[jsonSaveable.GetType().ToString()] = token;
                 Debug.Log($"{name} Capture {component} => {token.ToString()}");
+            }
+
+            if (capturePosition)
+            {
+                // Create a JToken of the position
+                JToken posToken = JsonStatics.ToToken(transform.position);
+                // Save the dict key under the Transform type
+                string posKey = typeof(Transform).ToString();
+                stateDict[posKey] = posToken;
+                Debug.Log($"{name} Capture {posKey} => {posToken.ToString()}");
             }
 
             return state;
@@ -53,7 +64,17 @@ namespace RPG.Saving
                 {
                     // Restore the object from the JToken
                     jsonSaveable.RestoreFromJToken(stateDict[component]);
-                    Debug.Log($"{name} Restore {component} => {stateDict[component].ToString()}");
+                    Debug.Log($"{name} Restore {component} => {stateDict[component]}");
+                }
+            }
+
+            if (capturePosition)
+            {
+                string posKey = typeof(Transform).ToString();
+                if (stateDict.ContainsKey(posKey))
+                {
+                    transform.position = JsonStatics.ToVector3(stateDict[posKey]);
+                    Debug.Log($"{name} Restore {posKey} => {stateDict[posKey]}");
                 }
             }
         }
@@ -61,15 +82,18 @@ namespace RPG.Saving
 #if UNITY_EDITOR
         private void Update()
         {
+            // We want these serializations to be set pre-runtime
             if (Application.IsPlaying(gameObject)) { return; }
             if (string.IsNullOrEmpty(gameObject.scene.path)) { return; }
 
+            // Find and assign the serialization of this monobehavior 
             SerializedObject serializedObject = new SerializedObject(this);
+            // Find the "uniqueIdentifier" property
             SerializedProperty property = serializedObject.FindProperty("uniqueIdentifier");
-
+            //Debug.Log($"Update: !IsUnique: {!IsUnique(property.stringValue)}");
             if (string.IsNullOrEmpty(property.stringValue) || !IsUnique(property.stringValue))
             {
-                property.stringValue = System.Guid.NewGuid().ToString();
+                property.stringValue = Guid.NewGuid().ToString();
                 serializedObject.ApplyModifiedProperties();
             }
 
@@ -80,15 +104,15 @@ namespace RPG.Saving
         private bool IsUnique(string candidate)
         {
             if (!globalLookup.ContainsKey(candidate)) { return true; }
-            if(globalLookup[candidate] == this) { return false; }
+            if (globalLookup[candidate] == this) { return true; }
 
-            if(globalLookup[candidate] == null)
+            if (globalLookup[candidate] == null)
             {
                 globalLookup.Remove(candidate);
                 return true;
             }
 
-            if(globalLookup[candidate].GetUniqueIdentifier() != candidate)
+            if (globalLookup[candidate].GetUniqueIdentifier() != candidate)
             {
                 globalLookup.Remove(candidate);
                 return true;

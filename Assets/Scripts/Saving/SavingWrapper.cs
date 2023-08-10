@@ -10,11 +10,11 @@ namespace RPG.Saving
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKeyDown(KeyCode.Alpha9))
             {
                 GetComponent<JsonSavingSystem>().Save(defaultSaveFile);
             }
-            if (Input.GetKeyDown(KeyCode.L))
+            if (Input.GetKeyDown(KeyCode.Alpha0))
             {
                 GetComponent<JsonSavingSystem>().Load(defaultSaveFile);
             }
