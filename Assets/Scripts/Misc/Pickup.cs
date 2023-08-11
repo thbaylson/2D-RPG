@@ -23,6 +23,7 @@ public class Pickup : MonoBehaviour
     [SerializeField] private float heightY = 1.5f;
     [SerializeField] private float popDuration = 1f;
 
+    private PlayerHealth playerHealth;
     private Rigidbody2D rb;
     private Vector3 moveDir;
     private float pickupDistance = 0f;
@@ -34,6 +35,8 @@ public class Pickup : MonoBehaviour
 
         pickupDistance = startPickupDistance;
         moveSpeed = startMoveSpeed;
+
+        playerHealth = FindObjectOfType<PlayerHealth>();
     }
 
     private void Start()
@@ -113,7 +116,7 @@ public class Pickup : MonoBehaviour
                 EconomyManager.Instance.IncrementCurrentGold();
                 break;
             case PickUpType.HealthGlobe:
-                PlayerHealth.Instance.HealPlayer();
+                playerHealth.HealPlayer();
                 break;
             case PickUpType.StaminaGlobe:
                 Stamina.Instance.RefreshStamina();

@@ -7,11 +7,13 @@ public class ActiveInventory : Singleton<ActiveInventory>
     private int activeSlotInd = 0;
 
     private PlayerControls playerControls;
+    private PlayerHealth playerHealth;
 
     protected override void Awake()
     {
         base.Awake();
         playerControls = new PlayerControls();
+        playerHealth = FindObjectOfType<PlayerHealth>();
     }
 
     private void Start()
@@ -72,7 +74,7 @@ public class ActiveInventory : Singleton<ActiveInventory>
     private void ChangeActiveWeapon()
     {
         // Don't try to change weapons if the player is dead
-        if (PlayerHealth.Instance.IsDead) { return; }
+        if (playerHealth.IsDead) { return; }
 
         // Destroy the old weapon prefab
         if (ActiveWeapon.Instance.CurrentActiveWeapon != null)

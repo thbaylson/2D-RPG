@@ -5,13 +5,15 @@ using UnityEngine.UI;
 
 public class Stamina : Singleton<Stamina>
 {
-    [SerializeField] private Sprite fullStaminaImage, emptyStaminaImage;
-    [SerializeField] private int staminaRefreshRate = 3;
+    public int CurrentStamina { get; private set; }
 
     private const string STAMINA_CONTAINER = "StaminaContainer";
 
-    public int CurrentStamina { get; private set; }
+    [SerializeField] private Sprite fullStaminaImage, emptyStaminaImage;
+    [SerializeField] private int staminaRefreshRate = 3;
+
     private Transform staminaContainer;
+    private PlayerHealth playerHealth;
     private int startingStamina = 3;
     private int maxStamina;
 
@@ -20,6 +22,7 @@ public class Stamina : Singleton<Stamina>
         base.Awake();
         maxStamina = startingStamina;
         CurrentStamina = startingStamina;
+        playerHealth = FindObjectOfType<PlayerHealth>();
     }
 
     private void Start()
@@ -39,7 +42,7 @@ public class Stamina : Singleton<Stamina>
     public void RefreshStamina()
     {
         // Make sure we never have more stamina than the max
-        if(CurrentStamina < maxStamina && !PlayerHealth.Instance.IsDead)
+        if(CurrentStamina < maxStamina && !playerHealth.IsDead)
         {
             CurrentStamina++;
             UpdateStaminaImages();
