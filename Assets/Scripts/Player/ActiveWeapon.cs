@@ -62,7 +62,11 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
 
     private void AttackInput()
     {
-        attackButtonDown = true;
+        // Only set this if we actually have a weapon
+        if (CurrentActiveWeapon == null)
+        {
+            attackButtonDown = true;
+        }
     }
 
     private void Attack()

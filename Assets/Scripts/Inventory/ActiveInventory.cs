@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ActiveInventory : Singleton<ActiveInventory>
 {
+    [SerializeField] GameObject inventorySlotPrefab;
+
     private int activeSlotInd = 0;
 
     private PlayerControls playerControls;
@@ -36,6 +39,29 @@ public class ActiveInventory : Singleton<ActiveInventory>
         ToggleActiveHighlight(0);
     }
 
+    public void AddItem(Equipable item)
+    {
+        // Make sure we only add unique items to our inventory
+        GameObject newWeapon = Instantiate(inventorySlotPrefab, Vector3.zero, Quaternion.identity);
+        InventorySlot inventorySlot = newWeapon.GetComponent<InventorySlot>();
+        if(inventorySlot != null)
+        {
+            Debug.Log("Has Inventory Slot!");
+            inventorySlot.SetWeaponInfo(item.Weapon);
+        }
+        
+        Image sp = newWeapon.transform.GetChild(1)?.GetComponent<Image>();
+        sp.sprite = item.InventorySprite.sprite;
+
+        newWeapon.transform.parent = this.transform;
+
+        // If the thing we just added was our first item, set it to be active
+        if(transform.childCount == 1)
+        {
+            ToggleActiveHighlight(0);
+        }
+    }
+
     private void ToggleActiveSlot(int keyboardButton)
     {
         // The keyboard controls will range from 1-5. Our indexes of course start at zero. Subtract 1 to get the index
@@ -48,14 +74,18 @@ public class ActiveInventory : Singleton<ActiveInventory>
         // Get number of inventory slots
         int numSlots = this.transform.childCount;
 
-        // Use modular arithmetic to cycle to the correct index.
-        int modulo = (activeSlotInd + controllerInput) % numSlots;
-        // If we are at 0, trying to cycle backwards needs to put us on the last index.
-        int newInd = modulo < 0 ? this.transform.childCount - 1 : modulo;
-        
-        if (newInd != activeSlotInd)
+        // Only do these if we actually have things in our inventory
+        if(numSlots > 0)
         {
-            ToggleActiveHighlight(newInd);
+            // Use modular arithmetic to cycle to the correct index.
+            int modulo = (activeSlotInd + controllerInput) % numSlots;
+            // If we are at 0, trying to cycle backwards needs to put us on the last index.
+            int newInd = modulo < 0 ? this.transform.childCount - 1 : modulo;
+        
+            if (newInd != activeSlotInd)
+            {
+                ToggleActiveHighlight(newInd);
+            }
         }
     }
 
@@ -66,9 +96,13 @@ public class ActiveInventory : Singleton<ActiveInventory>
         {
             inventorySlot.GetChild(0).gameObject.SetActive(false);
         }
-
-        this.transform.GetChild(index).GetChild(0).gameObject.SetActive(true);
-        ChangeActiveWeapon();
+        
+        // Only do these if we actually have things in our inventory
+        if(transform.childCount > 0)
+        {
+            this.transform.GetChild(index).GetChild(0).gameObject.SetActive(true);
+            ChangeActiveWeapon();
+        }
     }
 
     private void ChangeActiveWeapon()

@@ -10,4 +10,9 @@ public class InventorySlot : MonoBehaviour
     {
         return weaponInfo;
     }
+
+    public void SetWeaponInfo(WeaponInfo newWeaponInfo)
+    {
+        this.weaponInfo = newWeaponInfo;
+    }
 }
